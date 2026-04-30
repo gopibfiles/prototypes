@@ -17,6 +17,8 @@
       color: rgb(15, 21, 26);
     }
 
+    body.modal-open { overflow: hidden; }
+
     /* ── Top nav ── */
     .topnav {
       position: sticky;
@@ -369,12 +371,257 @@
       white-space: nowrap;
     }
 
+    /* ── Lightbox overlay ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 21, 26, 0.55);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal-panel {
+      width: 1140px;
+      max-width: 100%;
+      max-height: 90vh;
+      background: #fff;
+      border-radius: 16px 16px 0 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: translateY(40px);
+      transition: transform 0.35s ease;
+    }
+
+    .modal-overlay.open .modal-panel { transform: translateY(0); }
+
+    .modal-header {
+      height: 64px;
+      background: #fff;
+      border-radius: 16px 16px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 12px 8px;
+      flex-shrink: 0;
+      border-bottom: 1px solid rgb(228, 228, 228);
+    }
+
+    .modal-close-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: rgb(15, 21, 26);
+    }
+
+    .modal-close-btn svg { display: block; }
+
+    .modal-body {
+      display: flex;
+      gap: 48px;
+      padding: 0 64px 56px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .modal-left {
+      width: 364px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-top: 24px;
+    }
+
+    .modal-candidate-name {
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 20px;
+      color: rgb(0, 0, 0);
+    }
+
+    .modal-candidate-meta {
+      font-size: 14px;
+      line-height: 16px;
+      color: rgb(118, 119, 122);
+      margin-top: 4px;
+    }
+
+    .modal-divider {
+      height: 1px;
+      background: rgb(228, 228, 228);
+      margin: 8px 0;
+    }
+
+    .modal-alert {
+      border-radius: 12px;
+      background: rgba(15, 21, 26, 0.03);
+      padding: 16px 16px 16px 24px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .modal-alert-icon {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      margin-top: 8px;
+      color: rgb(15, 21, 26);
+    }
+
+    .modal-alert-icon svg { display: block; width: 20px; height: 20px; }
+
+    .modal-alert-text {
+      font-size: 16px;
+      line-height: 24px;
+      color: rgb(15, 21, 26);
+      flex: 1;
+    }
+
+    .modal-alert-dismiss {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: rgb(15, 21, 26);
+    }
+
+    .modal-alert-dismiss svg { display: block; }
+
+    .modal-invites {
+      font-size: 16px;
+      line-height: 20px;
+      color: rgb(0, 0, 0);
+    }
+
+    .modal-actions { display: flex; flex-direction: column; gap: 8px; }
+
+    .btn-send-invite,
+    .btn-not-suitable,
+    .btn-preview-invite {
+      width: 100%;
+      height: 48px;
+      border-radius: 8px;
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn-send-invite {
+      background: rgb(207, 4, 169);
+      border: none;
+      color: #fff;
+    }
+
+    .btn-not-suitable {
+      background: transparent;
+      border: 2px solid rgb(228, 228, 228);
+      color: rgb(15, 21, 26);
+    }
+
+    .btn-preview-invite {
+      background: transparent;
+      border: none;
+      color: rgb(30, 30, 240);
+    }
+
+    .modal-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-top: 24px;
+      min-width: 0;
+    }
+
+    .modal-tabs {
+      display: flex;
+      gap: 4px;
+      border: 1px solid rgb(228, 228, 228);
+      border-radius: 12px;
+      padding: 4px;
+      width: fit-content;
+    }
+
+    .modal-tab {
+      height: 40px;
+      padding: 0 24px;
+      border-radius: 8px;
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: rgb(15, 21, 26);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .modal-tab.active { background: rgb(233, 233, 254); }
+
+    .modal-pdf-viewer {
+      border-radius: 4px;
+      overflow: hidden;
+      border: 3px solid rgb(50, 54, 57);
+    }
+
+    .modal-pdf-header {
+      background: rgb(50, 54, 57);
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-pdf-header span {
+      font-size: 16px;
+      line-height: 20px;
+      color: #fff;
+    }
+
+    .modal-pdf-body {
+      background: rgb(217, 217, 217);
+      height: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-pdf-placeholder {
+      font-size: 16px;
+      color: rgb(118, 119, 122);
+    }
+
     /* ── Responsive ── */
     @media (max-width: 1024px) {
       .candidate-grid { grid-template-columns: repeat(2, 1fr); }
       .page { padding: 24px 32px; }
       .topnav { padding: 0 16px 0 32px; }
+      .modal-body { flex-direction: column; gap: 24px; padding: 0 32px 32px; }
+      .modal-left { width: 100%; }
     }
+
     @media (max-width: 640px) {
       .candidate-grid { grid-template-columns: 1fr; }
       .page { padding: 16px; }
@@ -382,6 +629,8 @@
       .nav-items, .nav-btn span { display: none; }
       .header-row { flex-direction: column; }
       .job-title { font-size: 24px; line-height: 32px; }
+      .modal-body { padding: 0 16px 24px; }
+      .modal-pdf-body { height: 400px; }
     }
   </style>
 </head>
@@ -419,8 +668,6 @@
 
   <!-- ── Page Content ── -->
   <main class="page">
-
-    <!-- Header block -->
     <div class="header-block">
       <div class="header-row">
         <div class="header-left">
@@ -457,7 +704,6 @@
       <span class="section-label">Matching candidates</span>
     </div>
 
-    <!-- Metric cards -->
     <div class="metrics-row">
       <div class="metric-card">
         <span class="metric-value" id="matches-count">9</span>
@@ -473,7 +719,6 @@
       </div>
     </div>
 
-    <!-- Actions rail -->
     <div class="actions-rail">
       <div class="actions-left">
         <button class="btn-filter" type="button">
@@ -488,15 +733,65 @@
       <span class="results-info" id="results-info">1 – 9 of 9 matches</span>
     </div>
 
-    <!-- Candidate card grid -->
-    <div class="candidate-grid" id="candidate-grid">
-      <!-- Cards inserted by JS -->
-    </div>
-
+    <div class="candidate-grid" id="candidate-grid"></div>
   </main>
 
+  <!-- ── Candidate Profile Modal ── -->
+  <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-name" hidden>
+    <div class="modal-panel">
+      <div class="modal-header">
+        <button class="modal-close-btn" id="modal-close" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13.150 13.150" fill="none" aria-hidden="true">
+            <path d="M 6.575 7.975 L 1.675 12.875 C 1.492 13.058 1.258 13.15 0.975 13.15 C 0.692 13.15 0.458 13.058 0.275 12.875 C 0.092 12.692 0 12.458 0 12.175 C 0 11.892 0.092 11.658 0.275 11.475 L 5.175 6.575 L 0.275 1.675 C 0.092 1.492 0 1.258 0 0.975 C 0 0.692 0.092 0.458 0.275 0.275 C 0.458 0.092 0.692 0 0.975 0 C 1.258 0 1.492 0.092 1.675 0.275 L 6.575 5.175 L 11.475 0.275 C 11.658 0.092 11.892 0 12.175 0 C 12.458 0 12.692 0.092 12.875 0.275 C 13.058 0.458 13.15 0.692 13.15 0.975 C 13.15 1.258 13.058 1.492 12.875 1.675 L 7.975 6.575 L 12.875 11.475 C 13.058 11.658 13.15 11.892 13.15 12.175 C 13.15 12.458 13.058 12.692 12.875 12.875 C 12.692 13.058 12.458 13.15 12.175 13.15 C 11.892 13.15 11.658 13.058 11.475 12.875 L 6.575 7.975 Z" fill="currentColor" fill-rule="nonzero"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-left">
+          <div>
+            <div class="modal-candidate-name" id="modal-name">Oliver</div>
+            <div class="modal-candidate-meta" id="modal-active">Last active 2 hours ago</div>
+            <div class="modal-candidate-meta">Registered 14/03/2025</div>
+          </div>
+          <div class="modal-divider"></div>
+          <div class="modal-alert" id="modal-alert">
+            <div class="modal-alert-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M 10 15 C 10.283 15 10.521 14.904 10.713 14.713 C 10.904 14.521 11 14.283 11 14 L 11 10 C 11 9.717 10.904 9.479 10.713 9.288 C 10.521 9.096 10.283 9 10 9 C 9.717 9 9.479 9.096 9.288 9.288 C 9.096 9.479 9 9.717 9 10 L 9 14 C 9 14.283 9.096 14.521 9.288 14.713 C 9.479 14.904 9.717 15 10 15 Z M 10 7 C 10.283 7 10.521 6.904 10.713 6.713 C 10.904 6.521 11 6.283 11 6 C 11 5.717 10.904 5.479 10.713 5.287 C 10.521 5.096 10.283 5 10 5 C 9.717 5 9.479 5.096 9.288 5.287 C 9.096 5.479 9 5.717 9 6 C 9 6.283 9.096 6.521 9.288 6.713 C 9.479 6.904 9.717 7 10 7 Z M 10 20 C 8.617 20 7.317 19.737 6.1 19.212 C 4.883 18.688 3.825 17.975 2.925 17.075 C 2.025 16.175 1.313 15.117 0.788 13.9 C 0.262 12.683 0 11.383 0 10 C 0 8.617 0.262 7.317 0.788 6.1 C 1.313 4.883 2.025 3.825 2.925 2.925 C 3.825 2.025 4.883 1.313 6.1 0.788 C 7.317 0.262 8.617 0 10 0 C 11.383 0 12.683 0.262 13.9 0.788 C 15.117 1.313 16.175 2.025 17.075 2.925 C 17.975 3.825 18.688 4.883 19.212 6.1 C 19.737 7.317 20 8.617 20 10 C 20 11.383 19.737 12.683 19.212 13.9 C 18.688 15.117 17.975 16.175 17.075 17.075 C 16.175 17.975 15.117 18.688 13.9 19.212 C 12.683 19.737 11.383 20 10 20 Z" fill="currentColor" fill-rule="nonzero"/>
+              </svg>
+            </div>
+            <div class="modal-alert-text">Invite to Apply lets you reach out to matched candidates and invite them to apply for your jobs.</div>
+            <button class="modal-alert-dismiss" type="button" aria-label="Dismiss notice">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13.150 13.150" fill="none" aria-hidden="true">
+                <path d="M 6.575 7.975 L 1.675 12.875 C 1.492 13.058 1.258 13.15 0.975 13.15 C 0.692 13.15 0.458 13.058 0.275 12.875 C 0.092 12.692 0 12.458 0 12.175 C 0 11.892 0.092 11.658 0.275 11.475 L 5.175 6.575 L 0.275 1.675 C 0.092 1.492 0 1.258 0 0.975 C 0 0.692 0.092 0.458 0.275 0.275 C 0.458 0.092 0.692 0 0.975 0 C 1.258 0 1.492 0.092 1.675 0.275 L 6.575 5.175 L 11.475 0.275 C 11.658 0.092 11.892 0 12.175 0 C 12.458 0 12.692 0.092 12.875 0.275 C 13.058 0.458 13.15 0.692 13.15 0.975 C 13.15 1.258 13.058 1.492 12.875 1.675 L 7.975 6.575 L 12.875 11.475 C 13.058 11.658 13.15 11.892 13.15 12.175 C 13.15 12.458 13.058 12.692 12.875 12.875 C 12.692 13.058 12.458 13.15 12.175 13.15 C 11.892 13.15 11.658 13.058 11.475 12.875 L 6.575 7.975 Z" fill="currentColor" fill-rule="nonzero"/>
+              </svg>
+            </button>
+          </div>
+          <div class="modal-invites">Invites remaining: 11</div>
+          <div class="modal-actions">
+            <button class="btn-send-invite" type="button">Send Invite</button>
+            <button class="btn-not-suitable" type="button">Not suitable</button>
+            <button class="btn-preview-invite" type="button">Preview invitation</button>
+          </div>
+        </div>
+        <div class="modal-right">
+          <div class="modal-tabs" role="tablist">
+            <button class="modal-tab active" type="button" role="tab" data-tab="cv">CV</button>
+            <button class="modal-tab" type="button" role="tab" data-tab="profile">Profile</button>
+            <button class="modal-tab" type="button" role="tab" data-tab="application">Application</button>
+          </div>
+          <div class="modal-pdf-viewer">
+            <div class="modal-pdf-header"><span id="modal-pdf-title">PDF viewer</span></div>
+            <div class="modal-pdf-body">
+              <span class="modal-pdf-placeholder" id="modal-pdf-placeholder">CV preview</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // SVG cross icon used inside the dismiss button on each card.
     const CROSS_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13.150 13.150" fill="none" aria-hidden="true"><path d="M 6.575 7.975 L 1.675 12.875 C 1.492 13.058 1.258 13.15 0.975 13.15 C 0.692 13.15 0.458 13.058 0.275 12.875 C 0.092 12.692 0 12.458 0 12.175 C 0 11.892 0.092 11.658 0.275 11.475 L 5.175 6.575 L 0.275 1.675 C 0.092 1.492 0 1.258 0 0.975 C 0 0.692 0.092 0.458 0.275 0.275 C 0.458 0.092 0.692 0 0.975 0 C 1.258 0 1.492 0.092 1.675 0.275 L 6.575 5.175 L 11.475 0.275 C 11.658 0.092 11.892 0 12.175 0 C 12.458 0 12.692 0.092 12.875 0.275 C 13.058 0.458 13.15 0.692 13.15 0.975 C 13.15 1.258 13.058 1.492 12.875 1.675 L 7.975 6.575 L 12.875 11.475 C 13.058 11.658 13.15 11.892 13.15 12.175 C 13.15 12.458 13.058 12.692 12.875 12.875 C 12.692 13.058 12.458 13.15 12.175 13.15 C 11.892 13.15 11.658 13.058 11.475 12.875 L 6.575 7.975 Z" fill="currentColor" fill-rule="nonzero"/></svg>`;
 
     const candidates = [
@@ -517,18 +812,18 @@
       }[c]));
     }
 
-    function renderCard(c) {
+    function renderCard(c, i) {
       const skillChips = c.skills.map(s => `<span class="chip">${escapeHtml(s)}</span>`).join('');
       return `
-        <div class="candidate-card">
+        <div class="candidate-card" data-index="${i}">
           <div class="card-top">
             <div>
               <div class="card-name">${escapeHtml(c.name)}</div>
               <div class="card-active">${escapeHtml(c.active)}</div>
             </div>
             <div class="card-actions">
-              <button class="btn-view" type="button">View</button>
-              <button class="btn-icon" type="button" aria-label="Dismiss">${CROSS_SVG}</button>
+              <button class="btn-view" type="button" data-action="view">View</button>
+              <button class="btn-icon" type="button" data-action="dismiss" aria-label="Dismiss">${CROSS_SVG}</button>
             </div>
           </div>
           <div class="card-divider"></div>
@@ -556,20 +851,92 @@
       resultsInfo.textContent = `1 – ${visible} of ${visible} matches`;
     }
 
+    // ── Modal logic ─────────────────────────────────────────────────────────
+    const overlay = document.getElementById('modal-overlay');
+    const modalName = document.getElementById('modal-name');
+    const modalActive = document.getElementById('modal-active');
+    const modalAlert = document.getElementById('modal-alert');
+    const modalPdfTitle = document.getElementById('modal-pdf-title');
+    const modalPdfPlaceholder = document.getElementById('modal-pdf-placeholder');
+    let lastFocus = null;
+
+    const TAB_CONTENT = {
+      cv:          { title: 'PDF viewer',     placeholder: 'CV preview' },
+      profile:     { title: 'Profile',        placeholder: 'Profile details' },
+      application: { title: 'Application',    placeholder: 'Application details' },
+    };
+
+    function openModal(candidate, triggerEl) {
+      lastFocus = triggerEl;
+      modalName.textContent = candidate.name;
+      modalActive.textContent = candidate.active;
+      // Reset to CV tab on open
+      document.querySelectorAll('.modal-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'cv'));
+      modalPdfTitle.textContent = TAB_CONTENT.cv.title;
+      modalPdfPlaceholder.textContent = TAB_CONTENT.cv.placeholder;
+
+      overlay.hidden = false;
+      // Force a frame so the transition runs
+      requestAnimationFrame(() => overlay.classList.add('open'));
+      document.body.classList.add('modal-open');
+      document.getElementById('modal-close').focus();
+    }
+
+    function closeModal() {
+      overlay.classList.remove('open');
+      document.body.classList.remove('modal-open');
+      const onEnd = () => {
+        overlay.hidden = true;
+        overlay.removeEventListener('transitionend', onEnd);
+      };
+      overlay.addEventListener('transitionend', onEnd);
+      if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+    }
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+    });
+
+    // Tab switching
+    document.querySelectorAll('.modal-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const content = TAB_CONTENT[tab.dataset.tab];
+        if (content) {
+          modalPdfTitle.textContent = content.title;
+          modalPdfPlaceholder.textContent = content.placeholder;
+        }
+      });
+    });
+
+    // Dismiss the alert inside the modal
+    document.querySelector('.modal-alert-dismiss').addEventListener('click', () => {
+      modalAlert.style.display = 'none';
+    });
+
+    // ── Card actions (event delegation) ─────────────────────────────────────
     grid.addEventListener('click', (e) => {
-      const dismissBtn = e.target.closest('.btn-icon');
-      if (!dismissBtn) return;
-      const card = dismissBtn.closest('.candidate-card');
-      if (!card || card.classList.contains('removing')) return;
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      const card = btn.closest('.candidate-card');
+      if (!card) return;
+      const idx = Number(card.dataset.index);
+      const candidate = candidates[idx];
 
-      card.classList.add('removing');
-      // Update count immediately so the metric is accurate during animation
-      updateCounts();
-
-      card.addEventListener('transitionend', () => {
-        card.classList.add('removed');
-        card.style.display = 'none';
-      }, { once: true });
+      if (btn.dataset.action === 'view') {
+        openModal(candidate, btn);
+      } else if (btn.dataset.action === 'dismiss') {
+        if (card.classList.contains('removing')) return;
+        card.classList.add('removing');
+        updateCounts();
+        card.addEventListener('transitionend', () => {
+          card.classList.add('removed');
+          card.style.display = 'none';
+        }, { once: true });
+      }
     });
   </script>
 </body>
