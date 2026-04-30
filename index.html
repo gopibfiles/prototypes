@@ -246,7 +246,111 @@
       white-space: nowrap;
     }
 
-    .btn-filter svg { display: block; flex-shrink: 0; }
+    .btn-filter svg { display: block; flex-shrink: 0; transition: transform 0.15s ease; }
+
+    .filter-dropdown { position: relative; }
+    .filter-dropdown.open .btn-filter svg { transform: rotate(180deg); }
+
+    .filter-menu {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      min-width: 180px;
+      background: #fff;
+      border: 1px solid rgb(228, 228, 228);
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(15, 21, 26, 0.08);
+      padding: 4px;
+      display: none;
+      z-index: 50;
+    }
+
+    .filter-dropdown.open .filter-menu { display: block; }
+
+    .filter-option {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 40px;
+      padding: 0 12px;
+      border: 0;
+      background: transparent;
+      border-radius: 6px;
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: rgb(15, 21, 26);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .filter-option:hover { background: rgba(15, 21, 26, 0.04); }
+    .filter-option.selected { background: rgb(233, 233, 254); }
+
+    /* ── Toast ── */
+    .toast-container {
+      position: fixed;
+      top: 76px;
+      right: 24px;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: rgb(15, 21, 26);
+      color: #fff;
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      line-height: 20px;
+      padding: 12px 18px;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(15, 21, 26, 0.18);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateX(24px);
+      opacity: 0;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+      pointer-events: auto;
+    }
+
+    .toast.show { transform: translateX(0); opacity: 1; }
+
+    .toast-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgb(61, 132, 57);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* ── Empty state ── */
+    .empty-state {
+      grid-column: 1 / -1;
+      padding: 64px 24px;
+      text-align: center;
+      color: rgb(118, 119, 122);
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .empty-state strong {
+      display: block;
+      font-weight: 700;
+      font-size: 18px;
+      color: rgb(15, 21, 26);
+      margin-bottom: 8px;
+    }
 
     .results-info { font-size: 16px; line-height: 20px; color: rgb(15, 21, 26); }
 
@@ -710,21 +814,27 @@
         <span class="metric-label">Matches</span>
       </div>
       <div class="metric-card">
-        <span class="metric-value">4</span>
+        <span class="metric-value" id="invited-count">4</span>
         <span class="metric-label">Invited</span>
       </div>
       <div class="metric-card">
-        <span class="metric-value">11</span>
+        <span class="metric-value" id="invites-remaining">11</span>
         <span class="metric-label">Invites remaining</span>
       </div>
     </div>
 
     <div class="actions-rail">
       <div class="actions-left">
-        <button class="btn-filter" type="button">
-          Matches
-          <svg width="10" height="5" viewBox="0 0 10 5" fill="rgb(15,21,26)" aria-hidden="true"><path d="M5 5L0 0L10 0L5 5Z"/></svg>
-        </button>
+        <div class="filter-dropdown" id="matches-dropdown">
+          <button class="btn-filter" type="button" id="matches-trigger" aria-haspopup="menu" aria-expanded="false">
+            <span id="matches-label">Matches</span>
+            <svg width="10" height="5" viewBox="0 0 10 5" fill="rgb(15,21,26)" aria-hidden="true"><path d="M5 5L0 0L10 0L5 5Z"/></svg>
+          </button>
+          <div class="filter-menu" role="menu" id="matches-menu">
+            <button class="filter-option selected" type="button" role="menuitem" data-value="Matches">Matches</button>
+            <button class="filter-option" type="button" role="menuitem" data-value="Invited">Invited</button>
+          </div>
+        </div>
         <button class="btn-filter" type="button">
           Last active date
           <svg width="10" height="5" viewBox="0 0 10 5" fill="rgb(15,21,26)" aria-hidden="true"><path d="M5 5L0 0L10 0L5 5Z"/></svg>
@@ -769,7 +879,7 @@
           </div>
           <div class="modal-invites">Invites remaining: 11</div>
           <div class="modal-actions">
-            <button class="btn-send-invite" type="button">Send Invite</button>
+            <button class="btn-send-invite" type="button" id="btn-send-invite">Send Invite</button>
             <button class="btn-not-suitable" type="button">Not suitable</button>
             <button class="btn-preview-invite" type="button">Preview invitation</button>
           </div>
@@ -778,7 +888,6 @@
           <div class="modal-tabs" role="tablist">
             <button class="modal-tab active" type="button" role="tab" data-tab="cv">CV</button>
             <button class="modal-tab" type="button" role="tab" data-tab="profile">Profile</button>
-            <button class="modal-tab" type="button" role="tab" data-tab="application">Application</button>
           </div>
           <div class="modal-pdf-viewer">
             <div class="modal-pdf-header"><span id="modal-pdf-title">PDF viewer</span></div>
@@ -791,20 +900,34 @@
     </div>
   </div>
 
+  <!-- ── Toast container ── -->
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
   <script>
     const CROSS_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13.150 13.150" fill="none" aria-hidden="true"><path d="M 6.575 7.975 L 1.675 12.875 C 1.492 13.058 1.258 13.15 0.975 13.15 C 0.692 13.15 0.458 13.058 0.275 12.875 C 0.092 12.692 0 12.458 0 12.175 C 0 11.892 0.092 11.658 0.275 11.475 L 5.175 6.575 L 0.275 1.675 C 0.092 1.492 0 1.258 0 0.975 C 0 0.692 0.092 0.458 0.275 0.275 C 0.458 0.092 0.692 0 0.975 0 C 1.258 0 1.492 0.092 1.675 0.275 L 6.575 5.175 L 11.475 0.275 C 11.658 0.092 11.892 0 12.175 0 C 12.458 0 12.692 0.092 12.875 0.275 C 13.058 0.458 13.15 0.692 13.15 0.975 C 13.15 1.258 13.058 1.492 12.875 1.675 L 7.975 6.575 L 12.875 11.475 C 13.058 11.658 13.15 11.892 13.15 12.175 C 13.15 12.458 13.058 12.692 12.875 12.875 C 12.692 13.058 12.458 13.15 12.175 13.15 C 11.892 13.15 11.658 13.058 11.475 12.875 L 6.575 7.975 Z" fill="currentColor" fill-rule="nonzero"/></svg>`;
 
-    const candidates = [
-      { name: 'Oliver',  active: 'Last active 2 hours ago', current: 'Web Developer',          desired: 'Web Developer',  location: 'Holborn, London',       eligibility: 'Eligible to work in UK', skills: ['User Research', 'AI', 'Usability Testing'] },
-      { name: 'Sophia',  active: 'Last active 5 hours ago', current: 'Staff Nurse',            desired: 'Nurse Assessor', location: 'Camden, London',        eligibility: 'Eligible to work in UK', skills: ['Clinical Assessment', 'WCA'] },
-      { name: 'James',   active: 'Last active 1 day ago',   current: 'Mental Health Nurse',    desired: 'Nurse Assessor', location: 'Islington, London',     eligibility: 'Eligible to work in UK', skills: ['Patient Care', 'Assessment', 'PIP'] },
-      { name: 'Amara',   active: 'Last active 3 hours ago', current: 'Physiotherapist',        desired: 'WCA Assessor',   location: 'Holborn, London',       eligibility: 'Eligible to work in UK', skills: ['Physiotherapy', 'Assessment'] },
-      { name: 'Daniel',  active: 'Last active 2 days ago',  current: 'Occupational Therapist', desired: 'Nurse Assessor', location: 'Westminster, London',   eligibility: 'Eligible to work in UK', skills: ['OT Assessment', 'WCA', 'Report Writing'] },
-      { name: 'Priya',   active: 'Last active 4 hours ago', current: 'Registered Nurse',       desired: 'Nurse Assessor', location: 'Southwark, London',     eligibility: 'Eligible to work in UK', skills: ['Clinical Assessment', 'PIP'] },
-      { name: 'Tom',     active: 'Last active 6 hours ago', current: 'Paramedic',              desired: 'WCA Assessor',   location: 'Lambeth, London',       eligibility: 'Eligible to work in UK', skills: ['Triage', 'Assessment', 'WCA'] },
-      { name: 'Fatima',  active: 'Last active 1 hour ago',  current: 'Community Nurse',        desired: 'Nurse Assessor', location: 'Hackney, London',       eligibility: 'Eligible to work in UK', skills: ['Patient Care', 'Clinical Assessment'] },
-      { name: 'Marcus',  active: 'Last active 3 days ago',  current: 'GP Practice Nurse',      desired: 'WCA Assessor',   location: 'Tower Hamlets, London', eligibility: 'Eligible to work in UK', skills: ['Assessment', 'PIP', 'WCA'] },
-    ];
+    // ── State ───────────────────────────────────────────────────────────────
+    // Each candidate has a `status` of 'matched' or 'invited'. The active view
+    // filters on this. Invites remaining is computed from the original budget
+    // (15) minus invited count, so the metric stays consistent.
+    const INITIAL_INVITES_REMAINING = 11;
+    const INITIAL_INVITED_COUNT = 4;
+    const TOTAL_INVITE_BUDGET = INITIAL_INVITES_REMAINING + INITIAL_INVITED_COUNT;
+
+    const state = {
+      view: 'matched', // 'matched' | 'invited'
+      candidates: [
+        { id: 'c1', name: 'Oliver',  active: 'Last active 2 hours ago', current: 'Web Developer',          desired: 'Web Developer',  location: 'Holborn, London',       eligibility: 'Eligible to work in UK', skills: ['User Research', 'AI', 'Usability Testing'], status: 'matched' },
+        { id: 'c2', name: 'Sophia',  active: 'Last active 5 hours ago', current: 'Staff Nurse',            desired: 'Nurse Assessor', location: 'Camden, London',        eligibility: 'Eligible to work in UK', skills: ['Clinical Assessment', 'WCA'], status: 'matched' },
+        { id: 'c3', name: 'James',   active: 'Last active 1 day ago',   current: 'Mental Health Nurse',    desired: 'Nurse Assessor', location: 'Islington, London',     eligibility: 'Eligible to work in UK', skills: ['Patient Care', 'Assessment', 'PIP'], status: 'matched' },
+        { id: 'c4', name: 'Amara',   active: 'Last active 3 hours ago', current: 'Physiotherapist',        desired: 'WCA Assessor',   location: 'Holborn, London',       eligibility: 'Eligible to work in UK', skills: ['Physiotherapy', 'Assessment'], status: 'matched' },
+        { id: 'c5', name: 'Daniel',  active: 'Last active 2 days ago',  current: 'Occupational Therapist', desired: 'Nurse Assessor', location: 'Westminster, London',   eligibility: 'Eligible to work in UK', skills: ['OT Assessment', 'WCA', 'Report Writing'], status: 'matched' },
+        { id: 'c6', name: 'Priya',   active: 'Last active 4 hours ago', current: 'Registered Nurse',       desired: 'Nurse Assessor', location: 'Southwark, London',     eligibility: 'Eligible to work in UK', skills: ['Clinical Assessment', 'PIP'], status: 'matched' },
+        { id: 'c7', name: 'Tom',     active: 'Last active 6 hours ago', current: 'Paramedic',              desired: 'WCA Assessor',   location: 'Lambeth, London',       eligibility: 'Eligible to work in UK', skills: ['Triage', 'Assessment', 'WCA'], status: 'matched' },
+        { id: 'c8', name: 'Fatima',  active: 'Last active 1 hour ago',  current: 'Community Nurse',        desired: 'Nurse Assessor', location: 'Hackney, London',       eligibility: 'Eligible to work in UK', skills: ['Patient Care', 'Clinical Assessment'], status: 'matched' },
+        { id: 'c9', name: 'Marcus',  active: 'Last active 3 days ago',  current: 'GP Practice Nurse',      desired: 'WCA Assessor',   location: 'Tower Hamlets, London', eligibility: 'Eligible to work in UK', skills: ['Assessment', 'PIP', 'WCA'], status: 'matched' },
+      ],
+    };
 
     function escapeHtml(str) {
       return String(str).replace(/[&<>"']/g, c => ({
@@ -812,10 +935,20 @@
       }[c]));
     }
 
-    function renderCard(c, i) {
+    function getMatched() { return state.candidates.filter(c => c.status === 'matched'); }
+    function getInvited() { return state.candidates.filter(c => c.status === 'invited'); }
+    function getCurrentList() {
+      return state.view === 'invited' ? getInvited() : getMatched();
+    }
+
+    function renderCard(c) {
       const skillChips = c.skills.map(s => `<span class="chip">${escapeHtml(s)}</span>`).join('');
+      // Invited cards don't show the dismiss ✕ — that flow is for matches only.
+      const dismissBtn = c.status === 'matched'
+        ? `<button class="btn-icon" type="button" data-action="dismiss" aria-label="Dismiss">${CROSS_SVG}</button>`
+        : '';
       return `
-        <div class="candidate-card" data-index="${i}">
+        <div class="candidate-card" data-id="${c.id}">
           <div class="card-top">
             <div>
               <div class="card-name">${escapeHtml(c.name)}</div>
@@ -823,7 +956,7 @@
             </div>
             <div class="card-actions">
               <button class="btn-view" type="button" data-action="view">View</button>
-              <button class="btn-icon" type="button" data-action="dismiss" aria-label="Dismiss">${CROSS_SVG}</button>
+              ${dismissBtn}
             </div>
           </div>
           <div class="card-divider"></div>
@@ -839,16 +972,60 @@
       `;
     }
 
+    function renderEmptyState() {
+      if (state.view === 'invited') {
+        return `<div class="empty-state"><strong>No invited candidates yet</strong>Send an invite to a matched candidate and they'll show up here.</div>`;
+      }
+      return `<div class="empty-state"><strong>No matching candidates</strong>You've worked through every match for this job.</div>`;
+    }
+
     const grid = document.getElementById('candidate-grid');
     const matchesCount = document.getElementById('matches-count');
+    const invitedCount = document.getElementById('invited-count');
+    const invitesRemaining = document.getElementById('invites-remaining');
     const resultsInfo = document.getElementById('results-info');
 
-    grid.innerHTML = candidates.map(renderCard).join('');
+    function render() {
+      const list = getCurrentList();
+      grid.innerHTML = list.length ? list.map(renderCard).join('') : renderEmptyState();
+      updateMetrics();
+      updateResultsInfo();
+    }
 
-    function updateCounts() {
-      const visible = grid.querySelectorAll('.candidate-card:not(.removing):not(.removed)').length;
-      matchesCount.textContent = visible;
-      resultsInfo.textContent = `1 – ${visible} of ${visible} matches`;
+    function updateMetrics() {
+      const matched = getMatched().length;
+      // Invited metric: starts at 4 (pre-existing) and grows with each new invite.
+      const invited = INITIAL_INVITED_COUNT + getInvited().length;
+      matchesCount.textContent = matched;
+      invitedCount.textContent = invited;
+      invitesRemaining.textContent = Math.max(0, TOTAL_INVITE_BUDGET - invited);
+    }
+
+    function updateResultsInfo() {
+      const list = getCurrentList();
+      const noun = state.view === 'invited' ? 'invited' : 'matches';
+      if (!list.length) {
+        resultsInfo.textContent = `0 ${noun}`;
+      } else {
+        resultsInfo.textContent = `1 – ${list.length} of ${list.length} ${noun}`;
+      }
+    }
+
+    render();
+
+    // ── Toast ───────────────────────────────────────────────────────────────
+    const toastContainer = document.getElementById('toast-container');
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<span class="toast-check" aria-hidden="true">✓</span><span>${escapeHtml(message)}</span>`;
+      toastContainer.appendChild(toast);
+      requestAnimationFrame(() => toast.classList.add('show'));
+      setTimeout(() => {
+        toast.classList.remove('show');
+        toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+      }, 3000);
     }
 
     // ── Modal logic ─────────────────────────────────────────────────────────
@@ -858,25 +1035,28 @@
     const modalAlert = document.getElementById('modal-alert');
     const modalPdfTitle = document.getElementById('modal-pdf-title');
     const modalPdfPlaceholder = document.getElementById('modal-pdf-placeholder');
+    const sendInviteBtn = document.getElementById('btn-send-invite');
     let lastFocus = null;
+    let activeCandidateId = null;
 
     const TAB_CONTENT = {
-      cv:          { title: 'PDF viewer',     placeholder: 'CV preview' },
-      profile:     { title: 'Profile',        placeholder: 'Profile details' },
-      application: { title: 'Application',    placeholder: 'Application details' },
+      cv:      { title: 'PDF viewer', placeholder: 'CV preview' },
+      profile: { title: 'Profile',    placeholder: 'Profile details' },
     };
 
     function openModal(candidate, triggerEl) {
       lastFocus = triggerEl;
+      activeCandidateId = candidate.id;
       modalName.textContent = candidate.name;
       modalActive.textContent = candidate.active;
+      // Hide the Send Invite button when already invited — stops the double-invite flow.
+      sendInviteBtn.style.display = candidate.status === 'invited' ? 'none' : '';
       // Reset to CV tab on open
       document.querySelectorAll('.modal-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'cv'));
       modalPdfTitle.textContent = TAB_CONTENT.cv.title;
       modalPdfPlaceholder.textContent = TAB_CONTENT.cv.placeholder;
 
       overlay.hidden = false;
-      // Force a frame so the transition runs
       requestAnimationFrame(() => overlay.classList.add('open'));
       document.body.classList.add('modal-open');
       document.getElementById('modal-close').focus();
@@ -890,13 +1070,26 @@
         overlay.removeEventListener('transitionend', onEnd);
       };
       overlay.addEventListener('transitionend', onEnd);
-      if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+      if (lastFocus && typeof lastFocus.focus === 'function' && document.contains(lastFocus)) {
+        lastFocus.focus();
+      }
+      activeCandidateId = null;
     }
 
     document.getElementById('modal-close').addEventListener('click', closeModal);
     overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+    });
+
+    // Send Invite — flips status, closes modal, toasts, re-renders
+    sendInviteBtn.addEventListener('click', () => {
+      const candidate = state.candidates.find(c => c.id === activeCandidateId);
+      if (!candidate || candidate.status === 'invited') return;
+      candidate.status = 'invited';
+      closeModal();
+      render();
+      showToast('Invite sent');
     });
 
     // Tab switching
@@ -923,20 +1116,56 @@
       if (!btn) return;
       const card = btn.closest('.candidate-card');
       if (!card) return;
-      const idx = Number(card.dataset.index);
-      const candidate = candidates[idx];
+      const id = card.dataset.id;
+      const candidate = state.candidates.find(c => c.id === id);
+      if (!candidate) return;
 
       if (btn.dataset.action === 'view') {
         openModal(candidate, btn);
       } else if (btn.dataset.action === 'dismiss') {
         if (card.classList.contains('removing')) return;
+        // Animate removal, then drop the candidate from state and re-render
         card.classList.add('removing');
-        updateCounts();
         card.addEventListener('transitionend', () => {
-          card.classList.add('removed');
-          card.style.display = 'none';
+          state.candidates = state.candidates.filter(c => c.id !== id);
+          render();
         }, { once: true });
       }
+    });
+
+    // ── Matches filter dropdown ─────────────────────────────────────────────
+    const matchesDropdown = document.getElementById('matches-dropdown');
+    const matchesTrigger = document.getElementById('matches-trigger');
+    const matchesMenu = document.getElementById('matches-menu');
+    const matchesLabel = document.getElementById('matches-label');
+
+    function toggleMatchesMenu(force) {
+      const willOpen = typeof force === 'boolean' ? force : !matchesDropdown.classList.contains('open');
+      matchesDropdown.classList.toggle('open', willOpen);
+      matchesTrigger.setAttribute('aria-expanded', String(willOpen));
+    }
+
+    matchesTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMatchesMenu();
+    });
+
+    matchesMenu.addEventListener('click', (e) => {
+      const opt = e.target.closest('.filter-option');
+      if (!opt) return;
+      matchesMenu.querySelectorAll('.filter-option').forEach(o => o.classList.toggle('selected', o === opt));
+      matchesLabel.textContent = opt.dataset.value;
+      state.view = opt.dataset.value === 'Invited' ? 'invited' : 'matched';
+      render();
+      toggleMatchesMenu(false);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!matchesDropdown.contains(e.target)) toggleMatchesMenu(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && matchesDropdown.classList.contains('open')) toggleMatchesMenu(false);
     });
   </script>
 </body>
