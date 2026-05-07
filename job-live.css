@@ -268,7 +268,7 @@ body {
 
 /* Sidebar */
 .sidebar {
-  padding: 24px;
+  padding: 70px 0 0 0;
 }
 .sidebar-title { font-weight: 700; font-size: 16px; line-height: 22px; margin-bottom: 24px; }
 .sidebar-list { list-style: none; display: flex; flex-direction: column; gap: 24px; }
