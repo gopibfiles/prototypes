@@ -76,6 +76,8 @@
     }
     .nav-btn .icon { display: block; color: var(--c-text); }
     .nav-btn .caret { display: block; }
+    .nav-btn { background: var(--nav-btn-bg, transparent); border: none; transition: background 0.15s ease; }
+    .nav-btn:hover { background: var(--nav-btn-hover-bg, rgba(15,21,26,0.04)); }
 
     /* ── Page ──────────────────────────────────────────────────── */
     .page {
@@ -822,6 +824,54 @@
 </head>
 <body>
 
+  <!-- React + Babel for Tweaks panel -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+
+  <div id="tweaks-root"></div>
+
+  <script type="text/babel">
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "navBtnBg": "transparent",
+      "navBtnHoverBg": "transparent"
+    }/*EDITMODE-END*/;
+
+    function TweaksApp() {
+      const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+      React.useEffect(() => {
+        document.documentElement.style.setProperty('--nav-btn-bg', t.navBtnBg);
+        document.documentElement.style.setProperty('--nav-btn-hover-bg', t.navBtnHoverBg);
+      }, [t.navBtnBg, t.navBtnHoverBg]);
+      return (
+        <TweaksPanel title="Tweaks">
+          <TweakSection title="Top nav buttons (Basket / Name)">
+            <TweakRadio
+              label="Background"
+              value={t.navBtnBg}
+              onChange={v => setTweak('navBtnBg', v)}
+              options={[
+                { value: 'transparent', label: 'None' },
+                { value: 'rgba(15,21,26,0.04)', label: 'Grey' },
+              ]}
+            />
+            <TweakRadio
+              label="Hover background"
+              value={t.navBtnHoverBg}
+              onChange={v => setTweak('navBtnHoverBg', v)}
+              options={[
+                { value: 'transparent', label: 'None' },
+                { value: 'rgba(15,21,26,0.04)', label: 'Grey' },
+              ]}
+            />
+          </TweakSection>
+        </TweaksPanel>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<TweaksApp />);
+  </script>
+
   <!-- ── Top Navigation ────────────────────────────────────────── -->
   <nav class="topnav">
     <div class="topnav-left">
@@ -889,7 +939,7 @@
           </button>
         </div>
       </div>
-      <span class="section-label">Matching candidates</span>
+      <span class="section-label">Invite matching candidates</span>
     </div>
 
     <!-- Metrics -->
@@ -903,7 +953,7 @@
         <span class="metric-label">Invited</span>
       </div>
       <div class="metric-card">
-        <span class="metric-value" id="invites-remaining">11</span>
+        <span class="metric-value" id="invites-remaining">15</span>
         <span class="metric-label">Invites remaining</span>
       </div>
     </div>
@@ -1227,7 +1277,7 @@
                 <svg viewBox="0 0 13.150 13.150" fill="none" aria-hidden="true"><path fill="currentColor" fill-rule="nonzero" d="M 6.575 7.975 L 1.675 12.875 C 1.492 13.058 1.258 13.15 0.975 13.15 C 0.692 13.15 0.458 13.058 0.275 12.875 C 0.092 12.692 0 12.458 0 12.175 C 0 11.892 0.092 11.658 0.275 11.475 L 5.175 6.575 L 0.275 1.675 C 0.092 1.492 0 1.258 0 0.975 C 0 0.692 0.092 0.458 0.275 0.275 C 0.458 0.092 0.692 0 0.975 0 C 1.258 0 1.492 0.092 1.675 0.275 L 6.575 5.175 L 11.475 0.275 C 11.658 0.092 11.892 0 12.175 0 C 12.458 0 12.692 0.092 12.875 0.275 C 13.058 0.458 13.15 0.692 13.15 0.975 C 13.15 1.258 13.058 1.492 12.875 1.675 L 7.975 6.575 L 12.875 11.475 C 13.058 11.658 13.15 11.892 13.15 12.175 C 13.15 12.458 13.058 12.692 12.875 12.875 C 12.692 13.058 12.458 13.15 12.175 13.15 C 11.892 13.15 11.658 13.058 11.475 12.875 L 6.575 7.975 Z"/></svg>
               </button>
             </div>
-            <div class="modal-invites">Invites remaining: <span id="modal-invites-remaining">11</span></div>
+            <div class="modal-invites">Invites remaining: <span id="modal-invites-remaining">15</span></div>
             <div class="modal-actions">
               <button class="btn-send-invite" type="button">Send Invite</button>
               <button class="btn-not-suitable" type="button">Not suitable</button>
