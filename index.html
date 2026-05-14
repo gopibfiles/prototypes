@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create your job advert – Jobstogo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@400;500;600;700&family=Roboto:wght@800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="jobstogo-shared.css" />
+  <style>
+    .form-page { max-width: 856px; margin: 0 auto; padding: 40px 0 80px; }
+
+    .form-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .form-title { font-weight: 700; font-size: 32px; line-height: 40px; }
+    .form-sub { font-size: 16px; line-height: 24px; color: var(--c-text); margin-top: 8px; max-width: 600px; }
+
+    .use-template-btn {
+      height: 48px;
+      padding: 0 16px;
+      border-radius: 8px;
+      background: transparent;
+      border: 2px solid var(--c-navy);
+      color: var(--c-navy);
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 700; font-size: 16px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .use-template-btn:hover { background: rgba(8,19,81,0.04); }
+
+    .form-stack { display: flex; flex-direction: column; gap: 24px; }
+
+    .form-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: var(--shadow-card);
+      padding: 24px;
+    }
+
+    .group-title { font-weight: 700; font-size: 18px; line-height: 24px; margin-bottom: 24px; }
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .row-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .add-link-btn {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--c-border);
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--c-blue);
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 700; font-size: 16px; line-height: 20px;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .add-link-btn:hover { text-decoration: underline; }
+
+    .location-divider {
+      height: 1px;
+      background: var(--c-border);
+      margin: 24px -24px;
+    }
+
+    .radio-stack { display: flex; flex-direction: column; gap: 16px; }
+
+    .city-link {
+      color: var(--c-blue);
+      font-weight: 700; font-size: 16px; line-height: 20px;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 16px;
+    }
+    .city-link:hover { text-decoration: underline; }
+
+    .salary-link {
+      color: var(--c-blue);
+      font-weight: 700; font-size: 16px; line-height: 20px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-top: 16px;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .salary-link:hover { text-decoration: underline; }
+
+    .char-count {
+      font-size: 14px; line-height: 20px;
+      color: var(--c-muted);
+      margin-top: 8px;
+    }
+
+    .submit-row {
+      display: flex; justify-content: flex-end;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-left">
+    <a class="logo" href="Welcome.html">Jobstogo</a>
+    <div class="nav-items">
+      <a class="nav-item" href="#" style="font-weight: 600">Campaigns</a>
+      <a class="nav-item active" href="Jobs.html" style="font-weight: 600">Jobs &amp; Applications</a>
+      <a class="nav-item" href="#" style="font-weight: 600">CV Search</a>
+      <a class="nav-item" href="#" style="font-weight: 600">Your candidates</a>
+    </div>
+  </div>
+  <div class="topnav-right">
+    <button class="nav-btn" type="button">
+      <svg width="22" height="19" viewBox="0 0 22.186 19" fill="none" aria-hidden="true">
+        <path fill="currentColor" fill-rule="nonzero" d="M 4.093 19 C 3.81 19 3.551 18.913 3.318 18.738 C 3.085 18.563 2.926 18.333 2.843 18.05 L 0.043 7.95 C -0.04 7.717 -0.003 7.5 0.155 7.3 C 0.314 7.1 0.526 7 0.793 7 L 5.843 7 L 10.243 0.45 C 10.326 0.317 10.443 0.208 10.593 0.125 C 10.743 0.042 10.901 0 11.068 0 C 11.235 0 11.393 0.042 11.543 0.125 C 11.693 0.208 11.81 0.317 11.893 0.45 L 16.293 7 L 21.393 7 C 21.66 7 21.872 7.1 22.031 7.3 C 22.189 7.5 22.226 7.717 22.143 7.95 L 19.343 18.05 C 19.26 18.333 19.101 18.563 18.868 18.738 C 18.635 18.913 18.376 19 18.093 19 L 4.093 19 Z M 4.593 17 L 17.593 17 L 19.793 9 L 2.393 9 L 4.593 17 Z M 11.093 15 C 11.643 15 12.114 14.804 12.506 14.413 C 12.897 14.021 13.093 13.55 13.093 13 C 13.093 12.45 12.897 11.979 12.506 11.587 C 12.114 11.196 11.643 11 11.093 11 C 10.543 11 10.072 11.196 9.681 11.587 C 9.289 11.979 9.093 12.45 9.093 13 C 9.093 13.55 9.289 14.021 9.681 14.413 C 10.072 14.804 10.543 15 11.093 15 Z M 8.268 7 L 13.893 7 L 11.068 2.8 L 8.268 7 Z"/>
+      </svg>
+      <span style="font-weight: 600">Basket</span>
+    </button>
+    <button class="nav-btn" type="button">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path fill="currentColor" fill-rule="nonzero" d="M 8 8 C 6.9 8 5.958 7.608 5.175 6.825 C 4.392 6.042 4 5.1 4 4 C 4 2.9 4.392 1.958 5.175 1.175 C 5.958 0.392 6.9 0 8 0 C 9.1 0 10.042 0.392 10.825 1.175 C 11.608 1.958 12 2.9 12 4 C 12 5.1 11.608 6.042 10.825 6.825 C 10.042 7.608 9.1 8 8 8 Z M 14 16 L 2 16 C 1.45 16 0.979 15.804 0.588 15.413 C 0.196 15.021 0 14.55 0 14 L 0 13.2 C 0 12.633 0.146 12.112 0.438 11.637 C 0.729 11.162 1.117 10.8 1.6 10.55 C 2.633 10.033 3.683 9.646 4.75 9.387 C 5.817 9.129 6.9 9 8 9 C 9.1 9 10.183 9.129 11.25 9.387 C 12.317 9.646 13.367 10.033 14.4 10.55 C 14.883 10.8 15.271 11.162 15.562 11.637 C 15.854 12.112 16 12.633 16 13.2 L 16 14 C 16 14.55 15.804 15.021 15.413 15.413 C 15.021 15.804 14.55 16 14 16 Z M 2 14 L 14 14 L 14 13.2 C 14 13.017 13.954 12.85 13.863 12.7 C 13.771 12.55 13.65 12.433 13.5 12.35 C 12.6 11.9 11.692 11.562 10.775 11.337 C 9.858 11.112 8.933 11 8 11 C 7.067 11 6.142 11.112 5.225 11.337 C 4.308 11.562 3.4 11.9 2.5 12.35 C 2.35 12.433 2.229 12.55 2.138 12.7 C 2.046 12.85 2 13.017 2 13.2 L 2 14 Z M 8 6 C 8.55 6 9.021 5.804 9.413 5.412 C 9.804 5.021 10 4.55 10 4 C 10 3.45 9.804 2.979 9.413 2.588 C 9.021 2.196 8.55 2 8 2 C 7.45 2 6.979 2.196 6.588 2.588 C 6.196 2.979 6 3.45 6 4 C 6 4.55 6.196 5.021 6.588 5.412 C 6.979 5.804 7.45 6 8 6 Z"/>
+      </svg>
+      <span style="font-weight: 600">Name</span>
+      <svg width="10" height="5" viewBox="0 0 10 5" fill="currentColor" aria-hidden="true">
+        <path d="M5 5L0 0L10 0L5 5Z" fill-rule="nonzero" />
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<main class="form-page">
+
+  <header class="form-header">
+    <div>
+      <h1 class="form-title">Create your job advert</h1>
+      <p class="form-sub">As you create your job advert, your progress will be automatically saved as a draft.</p>
+    </div>
+    <button class="use-template-btn" type="button" style="font-weight: 600">Use template</button>
+  </header>
+
+  <div class="form-stack">
+
+    <!-- Job title card -->
+    <section class="form-card">
+      <div class="field">
+        <label class="label" for="job-title">Job title <span class="req">*</span></label>
+        <input class="input" type="text" id="job-title" />
+        <div class="help">Keep your job title concise by using as few words as possible.</div>
+      </div>
+      <button class="add-link-btn" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        Add job reference
+      </button>
+    </section>
+
+    <!-- Job types card -->
+    <section class="form-card">
+      <div class="group-title">Job types</div>
+      <div class="row-2">
+        <div class="field">
+          <label class="label" for="contract-type">Contract type</label>
+          <select class="select" id="contract-type">
+            <option>Permanent</option>
+            <option>Contract</option>
+            <option>Temporary</option>
+            <option>Apprenticeship</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="label" for="working-hours">Working hours</label>
+          <select class="select" id="working-hours">
+            <option>Full-time</option>
+            <option>Part-time</option>
+            <option>Flexible</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Location card -->
+    <section class="form-card">
+      <div class="group-title">Location</div>
+
+      <div class="field">
+        <div class="label">Working location</div>
+        <div class="radio-stack">
+          <label class="radio-row">
+            <input type="radio" name="working-location" checked />
+            <span class="radio-circle" aria-hidden="true"></span>
+            <span class="radio-content">
+              <div class="radio-label">On-site</div>
+              <div class="radio-desc">Work must be carried out in person at a workplace or in the field.</div>
+            </span>
+          </label>
+          <label class="radio-row">
+            <input type="radio" name="working-location" />
+            <span class="radio-circle" aria-hidden="true"></span>
+            <span class="radio-content">
+              <div class="radio-label">Hybrid</div>
+              <div class="radio-desc">Work includes both remote work and scheduled on-site attendance.</div>
+            </span>
+          </label>
+          <label class="radio-row">
+            <input type="radio" name="working-location" />
+            <span class="radio-circle" aria-hidden="true"></span>
+            <span class="radio-content">
+              <div class="radio-label">Remote</div>
+              <div class="radio-desc">Work is done off-site, with no scheduled requirement to attend a workplace.</div>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="location-divider"></div>
+
+      <div class="field" style="margin-bottom: 24px;">
+        <label class="label" for="country">Country</label>
+        <select class="select" id="country" style="max-width: 50%;">
+          <option>United Kingdom</option>
+          <option>Ireland</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label class="label" for="postcode">Postcode <span class="req">*</span></label>
+          <input class="input" type="text" id="postcode" />
+        </div>
+        <div class="field">
+          <label class="label" for="location-shown" style="color: var(--c-muted);">Location shown on advert</label>
+          <input class="input" type="text" id="location-shown" disabled />
+        </div>
+      </div>
+      <a class="city-link" href="#">Enter a city or town</a>
+    </section>
+
+    <!-- Salary card -->
+    <section class="form-card">
+      <div class="group-title">Salary <span class="req">*</span></div>
+      <div class="row-4">
+        <div class="field">
+          <label class="label" for="salary-type">Salary type</label>
+          <select class="select" id="salary-type">
+            <option>Per annum</option>
+            <option>Per hour</option>
+            <option>Per day</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="label" for="currency">Currency</label>
+          <select class="select" id="currency">
+            <option>GBP (£)</option>
+            <option>EUR (€)</option>
+            <option>USD ($)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="label" for="min-salary">Min salary <span class="req">*</span></label>
+          <input class="input" type="text" id="min-salary" />
+        </div>
+        <div class="field">
+          <label class="label" for="max-salary">Max salary</label>
+          <input class="input" type="text" id="max-salary" />
+        </div>
+      </div>
+      <label class="check-row" style="margin-top: 16px;">
+        <input type="checkbox" />
+        <span class="check-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="m9 16.17-3.88-3.88a.996.996 0 1 0-1.41 1.41l4.59 4.59c.39.39 1.02.39 1.41 0L20.71 7.21a.996.996 0 1 0-1.41-1.41L9 16.17z"/></svg>
+        </span>
+        <span class="check-label">Hide salary on job advert</span>
+      </label>
+      <div>
+        <button class="salary-link" type="button">
+          Salary benefits
+          <svg width="10" height="6" viewBox="0 0 10 5" fill="currentColor"><path d="M5 5L0 0L10 0L5 5Z" fill-rule="nonzero" /></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Job description card -->
+    <section class="form-card">
+      <div class="field">
+        <label class="label" for="description">Job description <span class="req">*</span></label>
+        <textarea class="textarea" id="description"></textarea>
+        <div class="char-count">You have 6000 characters remaining</div>
+      </div>
+    </section>
+
+    <!-- Application settings -->
+    <section class="form-card">
+      <div class="group-title">Application settings</div>
+
+      <div class="field" style="margin-bottom: 24px;">
+        <div class="label">Receive applications via</div>
+        <div class="radio-stack">
+          <label class="radio-row">
+            <input type="radio" name="receive-via" checked />
+            <span class="radio-circle" aria-hidden="true"></span>
+            <span class="radio-content">
+              <div class="radio-label">Reed.co.uk Recruiter platform</div>
+            </span>
+          </label>
+          <label class="radio-row">
+            <input type="radio" name="receive-via" />
+            <span class="radio-circle" aria-hidden="true"></span>
+            <span class="radio-content">
+              <div class="radio-label">External URL (candidates will be redirected to your career website or ATS)</div>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom: 24px;">
+        <div class="label">Send applications to</div>
+        <div class="radio-stack">
+          <label class="radio-row">
+            <input type="radio" name="send-to" checked />
+            <span class="radio-circle" aria-hidden="true"></span>
+            <span class="radio-content">
+              <div class="radio-label">john.doe@reedonline.co.uk</div>
+            </span>
+          </label>
+          <label class="radio-row">
+            <input type="radio" name="send-to" />
+            <span class="radio-circle" aria-hidden="true"></span>
+            <span class="radio-content">
+              <div class="radio-label">Alternative email address</div>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="label">Notification frequency</div>
+        <div class="radio-stack">
+          <label class="radio-row">
+            <input type="radio" name="notify-freq" checked />
+            <span class="radio-circle" aria-hidden="true"></span>
+            <span class="radio-content">
+              <div class="radio-label">As soon as the application is made</div>
+            </span>
+          </label>
+          <label class="radio-row">
+            <input type="radio" name="notify-freq" />
+            <span class="radio-circle" aria-hidden="true"></span>
+            <span class="radio-content">
+              <div class="radio-label">Once per day</div>
+            </span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <div class="submit-row">
+      <a class="btn btn-pink" href="Job Live.html" id="post-btn" style="text-decoration: none; font-weight: 600">Post your job advert</a>
+    </div>
+  </div>
+</main>
+
+<script>
+  document.getElementById('post-btn').addEventListener('click', function () {
+    const v = document.getElementById('job-title').value;
+    try { localStorage.setItem('jt-job-title', v); } catch (e) {}
+  });
+</script>
+
+</body>
+</html>

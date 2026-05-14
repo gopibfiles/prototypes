@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome – Jobstogo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@400;500;600;700&family=Roboto:wght@800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="jobstogo-shared.css" />
+  <style>
+    .page-title {
+      font-weight: 700; font-size: 32px; line-height: 40px;
+      margin-bottom: 32px;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 344px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Left column ──────────────────────── */
+    .left-col { display: flex; flex-direction: column; gap: 24px; }
+
+    .profile-card { padding: 24px; position: relative; }
+    .profile-edit {
+      position: absolute; top: 24px; right: 24px;
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--c-blue);
+      background: none; border: none; cursor: pointer;
+    }
+    .profile-logo {
+      width: 96px; height: 96px;
+      background: #000; color: #fff;
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Roboto", serif; font-weight: 800; font-size: 36px;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    .profile-name { font-weight: 700; font-size: 18px; line-height: 24px; }
+    .profile-email { font-size: 16px; line-height: 24px; color: var(--c-text); margin-top: 4px; }
+    .profile-company { font-size: 16px; line-height: 24px; color: var(--c-muted); margin-top: 2px; }
+    .profile-link {
+      display: block;
+      padding-top: 16px;
+      margin-top: 16px;
+      border-top: 1px solid var(--c-border);
+      font-weight: 700; font-size: 16px;
+      color: var(--c-blue);
+      text-decoration: none;
+    }
+    .profile-link:hover { text-decoration: underline; }
+
+    .products-card { padding: 24px; }
+    .section-heading {
+      font-weight: 700; font-size: 18px; line-height: 24px;
+      margin-bottom: 16px;
+    }
+    .product-row {
+      display: flex; align-items: center; gap: 12px;
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--c-border);
+    }
+    .product-icon {
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--c-text);
+    }
+    .product-name { font-weight: 700; font-size: 16px; line-height: 20px; }
+    .credits-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 4px 0;
+    }
+    .credits-row .key { font-weight: 700; font-size: 16px; line-height: 20px; }
+    .credits-row .val { font-size: 16px; line-height: 20px; color: var(--c-text); }
+    .credits-row .buy { color: var(--c-blue); font-weight: 700; text-decoration: none; }
+    .credits-row .buy:hover { text-decoration: underline; }
+    .credits-rows { display: flex; flex-direction: column; gap: 8px; }
+
+    .actions-card { padding: 24px; }
+    .action-list { list-style: none; display: flex; flex-direction: column; gap: 20px; }
+    .action-item {
+      display: flex; align-items: center; gap: 12px;
+      font-weight: 700; font-size: 16px; line-height: 20px;
+      color: var(--c-text);
+      text-decoration: none;
+    }
+    .action-item:hover { color: var(--c-pink); }
+    .action-item:hover .action-icon { color: var(--c-pink); }
+    .action-icon {
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--c-text);
+      flex-shrink: 0;
+    }
+
+    /* ── Right column ─────────────────────── */
+    .right-col { display: flex; flex-direction: column; gap: 24px; }
+
+    .job-adverts-card { padding: 32px; }
+    .ja-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 24px;
+      gap: 24px;
+    }
+    .ja-title { font-weight: 700; font-size: 24px; line-height: 32px; }
+    .ja-subtitle { font-size: 16px; line-height: 24px; margin-top: 4px; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .stat-box {
+      border: 1px solid var(--c-border);
+      border-radius: 12px;
+      padding: 16px;
+      min-height: 124px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .stat-value { font-weight: 700; font-size: 32px; line-height: 40px; }
+    .stat-bottom {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 8px;
+    }
+    .stat-label { font-size: 16px; line-height: 20px; color: var(--c-muted); }
+    .stat-link { font-weight: 700; font-size: 16px; color: var(--c-blue); text-decoration: none; }
+    .stat-link:hover { text-decoration: underline; }
+    .ja-footer {
+      font-size: 14px; line-height: 20px;
+      color: var(--c-muted);
+      margin-top: 16px;
+    }
+
+    .cv-promo {
+      border: 1px dashed var(--c-border-strong);
+      border-radius: 12px;
+      padding: 48px 24px;
+      background: transparent;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      gap: 16px;
+    }
+    .cv-promo-icon {
+      width: 56px; height: 56px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--c-text);
+    }
+    .cv-promo-title {
+      font-weight: 700; font-size: 20px; line-height: 28px;
+      max-width: 520px;
+    }
+
+    .learn-card { padding: 24px; }
+    .learn-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px;
+    }
+    .learn-title { font-weight: 700; font-size: 18px; line-height: 24px; }
+    .learn-link {
+      font-weight: 700; font-size: 16px; color: var(--c-blue);
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .learn-link:hover { text-decoration: underline; }
+    .learn-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .learn-tile {
+      border: 1px solid var(--c-border);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      gap: 12px;
+      min-height: 124px;
+      text-decoration: none;
+      color: var(--c-text);
+    }
+    .learn-tile:hover { background: rgba(15,21,26,0.02); }
+    .learn-tile-icon {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--c-text);
+    }
+    .learn-tile-label { font-weight: 700; font-size: 16px; line-height: 20px; }
+  </style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<nav class="topnav">
+  <div class="topnav-left">
+    <a class="logo" href="Welcome.html">Jobstogo</a>
+    <div class="nav-items">
+      <a class="nav-item" href="#" style="font-weight: 600">Campaigns</a>
+      <a class="nav-item" href="Jobs.html" style="font-weight: 600">Jobs &amp; Applications</a>
+      <a class="nav-item" href="#" style="font-weight: 600">CV Search</a>
+      <a class="nav-item" href="#" style="font-weight: 600">Your candidates</a>
+    </div>
+  </div>
+  <div class="topnav-right">
+    <button class="nav-btn" type="button">
+      <svg width="22" height="19" viewBox="0 0 22.186 19" fill="none" aria-hidden="true">
+        <path fill="currentColor" fill-rule="nonzero" d="M 4.093 19 C 3.81 19 3.551 18.913 3.318 18.738 C 3.085 18.563 2.926 18.333 2.843 18.05 L 0.043 7.95 C -0.04 7.717 -0.003 7.5 0.155 7.3 C 0.314 7.1 0.526 7 0.793 7 L 5.843 7 L 10.243 0.45 C 10.326 0.317 10.443 0.208 10.593 0.125 C 10.743 0.042 10.901 0 11.068 0 C 11.235 0 11.393 0.042 11.543 0.125 C 11.693 0.208 11.81 0.317 11.893 0.45 L 16.293 7 L 21.393 7 C 21.66 7 21.872 7.1 22.031 7.3 C 22.189 7.5 22.226 7.717 22.143 7.95 L 19.343 18.05 C 19.26 18.333 19.101 18.563 18.868 18.738 C 18.635 18.913 18.376 19 18.093 19 L 4.093 19 Z M 4.593 17 L 17.593 17 L 19.793 9 L 2.393 9 L 4.593 17 Z M 11.093 15 C 11.643 15 12.114 14.804 12.506 14.413 C 12.897 14.021 13.093 13.55 13.093 13 C 13.093 12.45 12.897 11.979 12.506 11.587 C 12.114 11.196 11.643 11 11.093 11 C 10.543 11 10.072 11.196 9.681 11.587 C 9.289 11.979 9.093 12.45 9.093 13 C 9.093 13.55 9.289 14.021 9.681 14.413 C 10.072 14.804 10.543 15 11.093 15 Z M 8.268 7 L 13.893 7 L 11.068 2.8 L 8.268 7 Z"/>
+      </svg>
+      <span style="font-weight: 600">Basket</span>
+    </button>
+    <button class="nav-btn" type="button">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path fill="currentColor" fill-rule="nonzero" d="M 8 8 C 6.9 8 5.958 7.608 5.175 6.825 C 4.392 6.042 4 5.1 4 4 C 4 2.9 4.392 1.958 5.175 1.175 C 5.958 0.392 6.9 0 8 0 C 9.1 0 10.042 0.392 10.825 1.175 C 11.608 1.958 12 2.9 12 4 C 12 5.1 11.608 6.042 10.825 6.825 C 10.042 7.608 9.1 8 8 8 Z M 14 16 L 2 16 C 1.45 16 0.979 15.804 0.588 15.413 C 0.196 15.021 0 14.55 0 14 L 0 13.2 C 0 12.633 0.146 12.112 0.438 11.637 C 0.729 11.162 1.117 10.8 1.6 10.55 C 2.633 10.033 3.683 9.646 4.75 9.387 C 5.817 9.129 6.9 9 8 9 C 9.1 9 10.183 9.129 11.25 9.387 C 12.317 9.646 13.367 10.033 14.4 10.55 C 14.883 10.8 15.271 11.162 15.562 11.637 C 15.854 12.112 16 12.633 16 13.2 L 16 14 C 16 14.55 15.804 15.021 15.413 15.413 C 15.021 15.804 14.55 16 14 16 Z M 2 14 L 14 14 L 14 13.2 C 14 13.017 13.954 12.85 13.863 12.7 C 13.771 12.55 13.65 12.433 13.5 12.35 C 12.6 11.9 11.692 11.562 10.775 11.337 C 9.858 11.112 8.933 11 8 11 C 7.067 11 6.142 11.112 5.225 11.337 C 4.308 11.562 3.4 11.9 2.5 12.35 C 2.35 12.433 2.229 12.55 2.138 12.7 C 2.046 12.85 2 13.017 2 13.2 L 2 14 Z M 8 6 C 8.55 6 9.021 5.804 9.413 5.412 C 9.804 5.021 10 4.55 10 4 C 10 3.45 9.804 2.979 9.413 2.588 C 9.021 2.196 8.55 2 8 2 C 7.45 2 6.979 2.196 6.588 2.588 C 6.196 2.979 6 3.45 6 4 C 6 4.55 6.196 5.021 6.588 5.412 C 6.979 5.804 7.45 6 8 6 Z"/>
+      </svg>
+      <span style="font-weight: 600">Name</span>
+      <svg width="10" height="5" viewBox="0 0 10 5" fill="currentColor" aria-hidden="true">
+        <path d="M5 5L0 0L10 0L5 5Z" fill-rule="nonzero" />
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<main class="page">
+  <h1 class="page-title" style="font-size: 28px">Welcome, {name}</h1>
+
+  <div class="layout">
+    <!-- LEFT COLUMN -->
+    <div class="left-col">
+      <section class="card profile-card">
+        <button class="profile-edit" type="button" aria-label="Edit profile">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path fill="currentColor" d="M0 12.667V16h3.333l9.833-9.834-3.333-3.333L0 12.667zm15.74-9.074a.886.886 0 0 0 0-1.253l-2.08-2.08a.886.886 0 0 0-1.253 0L10.78 1.927l3.333 3.333 1.627-1.667z"/></svg>
+        </button>
+        <div class="profile-logo" style="font-size: 23px; width: 70px; height: 70px">A24</div>
+        <div class="profile-name">Jane Doe</div>
+        <div class="profile-email">jane.doe@a24films.com</div>
+        <div class="profile-company">A24</div>
+        <a class="profile-link" href="#">Create a company profile</a>
+      </section>
+
+      <section class="card products-card">
+        <div class="section-heading">Your products</div>
+        <div class="product-row">
+          <span class="product-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M20 6h-4V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-10-2h4v2h-4V4zm10 15H4V8h16v11z"/></svg>
+          </span>
+          <span class="product-name">Job adverts</span>
+        </div>
+        <div class="credits-rows">
+          <div class="credits-row">
+            <span class="key">Credits</span>
+            <a class="buy" href="#">Buy more</a>
+          </div>
+          <div class="credits-row">
+            <span class="val">Premium job</span>
+            <span class="val">10</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card actions-card">
+        <div class="section-heading">More actions</div>
+        <ul class="action-list">
+          <li><a class="action-item" href="#" style="font-weight: 600">
+            <span class="action-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M5 21q-.825 0-1.413-.587Q3 19.825 3 19V5q0-.825.587-1.413Q4.175 3 5 3h14q.825 0 1.413.587Q21 4.175 21 5v14q0 .825-.587 1.413Q19.825 21 19 21H5Zm0-2h14V5H5v14Zm2-2h2v-5H7v5Zm4 0h2V7h-2v10Zm4 0h2v-7h-2v7Z"/></svg></span>
+            Reports and insights
+          </a></li>
+          <li><a class="action-item" href="#" style="font-weight: 600">
+            <span class="action-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M20 6h-4V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-10-2h4v2h-4V4zm10 15H4V8h16v11z"/></svg></span>
+            Buy job ads
+          </a></li>
+          <li><a class="action-item" href="#" style="font-weight: 600">
+            <span class="action-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 11h-2v-2h2v2zm0-4h-2V5h2v4zm0-7H6v16h12V8h-5V2z"/></svg></span>
+            Buy CV search
+          </a></li>
+          <li><a class="action-item" href="#" style="font-weight: 600">
+            <span class="action-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M18 2H6c-1.1 0-2 .9-2 2v18l4-4h10c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H7l-3 3V4h14v12z"/></svg></span>
+            Hiring advice
+          </a></li>
+          <li><a class="action-item" href="#" style="font-weight: 600">
+            <span class="action-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span>
+            Help &amp; FAQs
+          </a></li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right-col">
+      <section class="card job-adverts-card">
+        <div class="ja-header">
+          <div>
+            <div class="ja-title">Job adverts</div>
+            <div class="ja-subtitle">Manage and monitor your job adverts.</div>
+          </div>
+          <button class="btn btn-pink" type="button">
+            Post a job
+            <svg width="10" height="6" viewBox="0 0 10 5" fill="currentColor" aria-hidden="true"><path d="M5 5L0 0L10 0L5 5Z" fill-rule="nonzero" /></svg>
+          </button>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-value">1</div>
+            <div class="stat-bottom">
+              <span class="stat-label">Active jobs</span>
+              <a class="stat-link" href="#">View</a>
+            </div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">0</div>
+            <div class="stat-bottom">
+              <span class="stat-label">Applications</span>
+            </div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">0</div>
+            <div class="stat-bottom">
+              <span class="stat-label">Views</span>
+            </div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">0</div>
+            <div class="stat-bottom">
+              <span class="stat-label">Conversion rate</span>
+            </div>
+          </div>
+        </div>
+        <div class="ja-footer">Insights based on your active jobs</div>
+      </section>
+
+      <section class="cv-promo">
+        <div class="cv-promo-icon">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none">
+            <path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h6.5a6.45 6.45 0 0 1-.5-2H6V4h7v5h5v1.5c.7.1 1.4.3 2 .6V8l-6-6zm-1 7V3.5L18.5 9H13z"/>
+            <path fill="currentColor" d="M16.5 12a4.5 4.5 0 1 0 2.85 8 .998.998 0 0 0 .96.75c.27 0 .54-.1.74-.3l1.5-1.5a1 1 0 0 0 0-1.41l-1.41-1.41A4.5 4.5 0 0 0 16.5 12zm0 7a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+          </svg>
+        </div>
+        <div class="cv-promo-title">Find talent faster with access to our candidate database</div>
+        <button class="btn btn-pink" type="button">Search talent</button>
+      </section>
+
+      <section class="learn-card card">
+        <div class="learn-header">
+          <div class="learn-title">Learn more about…</div>
+          <a class="learn-link" href="#">View all <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></a>
+        </div>
+        <div class="learn-grid">
+          <a class="learn-tile" href="#">
+            <span class="learn-tile-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M9 21h6v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1-.85.6V16h-4v-2.3l-.85-.6A5 5 0 1 1 17 9a4.97 4.97 0 0 1-2.15 4.1z"/></svg></span>
+            <span class="learn-tile-label">Hiring tips</span>
+          </a>
+          <a class="learn-tile" href="#">
+            <span class="learn-tile-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M20 6h-4V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-10-2h4v2h-4V4zm10 15H4V8h16v11z"/></svg></span>
+            <span class="learn-tile-label">How to post a job ad</span>
+          </a>
+          <a class="learn-tile" href="#">
+            <span class="learn-tile-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="m15.5 14 5 5-1.5 1.5-5-5v-.79l-.27-.28A6.471 6.471 0 0 1 9.5 16C5.91 16 3 13.09 3 9.5S5.91 3 9.5 3 16 5.91 16 9.5c0 1.61-.59 3.09-1.57 4.23l.28.27h.79zm-6 0a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9z"/></svg></span>
+            <span class="learn-tile-label">How to search CVs</span>
+          </a>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

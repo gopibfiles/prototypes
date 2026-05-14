@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application Management – WCA Nurse Assessor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@400;600;700&family=Roboto:wght@800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --c-text: rgb(15,21,26);
+      --c-muted: rgb(118,119,122);
+      --c-border: rgb(228,228,228);
+      --c-pink: rgb(207,4,169);
+      --c-pink-bright: rgb(255,0,205);
+      --c-lavender: rgb(233,233,254);
+      --c-bg: rgb(248,248,248);
+      --c-green-bg: rgb(238,248,237);
+      --c-green-text: rgb(61,132,57);
+      --c-blue: rgb(30,30,240);
+      --c-navy: rgb(8,19,81);
+      --c-pdf-frame: rgb(50,54,57);
+      --c-pdf-body: rgb(217,217,217);
+      --shadow-card: 0 2px 10px 0 rgba(15,21,26,0.03);
+    }
+
+    body {
+      background: var(--c-bg);
+      min-height: 100vh;
+      font-family: "Red Hat Text", sans-serif;
+      color: var(--c-text);
+    }
+
+    /* Chromeless mode: only the candidate modal + toast/improve are visible,
+       so the page can be embedded as an iframe overlay from other surfaces. */
+    html.chromeless body { background: transparent; }
+    html.chromeless body > nav,
+    html.chromeless body > main { display: none !important; }
+
+    /* ── Top nav ───────────────────────────────────────────────── */
+    .topnav {
+      position: sticky; top: 0; z-index: 100;
+      width: 100%; height: 60px;
+      background: #fff;
+      box-shadow: 0 2px 10px 0 rgba(15,21,26,0.03);
+      display: flex; align-items: center;
+      padding: 0 16px 0 72px;
+      justify-content: space-between;
+    }
+    .topnav-left { display: flex; align-items: center; gap: 24px; }
+    .logo {
+      font-family: "Roboto", sans-serif;
+      font-weight: 800; font-size: 25px; line-height: 20px;
+      color: var(--c-pink);
+      white-space: nowrap; text-decoration: none;
+    }
+    .nav-items { display: flex; align-items: center; }
+    .nav-item {
+      height: 60px; display: flex; align-items: center;
+      padding: 0 12px;
+      font-weight: 600; font-size: 16px;
+      color: var(--c-text); text-decoration: none;
+      position: relative; white-space: nowrap;
+    }
+    .nav-item.active { font-weight: 700; }
+    .nav-item.active::after {
+      content: ""; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 3px;
+      background: var(--c-pink-bright);
+      border-radius: 3px 3px 0 0;
+    }
+    .topnav-right { display: flex; align-items: center; }
+    .nav-btn {
+      height: 60px; display: flex; align-items: center; gap: 8px;
+      padding: 0 12px;
+      font-weight: 600; font-size: 16px;
+      color: var(--c-text); text-decoration: none;
+      cursor: pointer; white-space: nowrap;
+    }
+    .nav-btn .icon { display: block; color: var(--c-text); }
+    .nav-btn .caret { display: block; }
+    .nav-btn { background: var(--nav-btn-bg, transparent); border: none; transition: background 0.15s ease; }
+    .nav-btn:hover { background: var(--nav-btn-hover-bg, rgba(15,21,26,0.04)); }
+
+    /* ── Page ──────────────────────────────────────────────────── */
+    .page {
+      max-width: 1076px;
+      margin: 0 auto;
+      padding: 32px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ── Header block ──────────────────────────────────────────── */
+    .header-block { display: flex; flex-direction: column; gap: 24px; }
+    .header-row {
+      display: flex; flex-direction: row;
+      align-items: flex-start; justify-content: space-between;
+      gap: 16px;
+    }
+    .header-left { display: flex; flex-direction: column; gap: 8px; }
+    .title-row { display: flex; align-items: center; gap: 8px; }
+    .back-btn {
+      width: 24px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0;
+      background: transparent; border: none;
+      color: var(--c-text);
+    }
+    .back-btn svg { width: 16px; height: 16px; display: block; }
+
+    .job-title {
+      font-weight: 700; font-size: 32px; line-height: 40px;
+      color: var(--c-text);
+    }
+    .job-details {
+      display: flex; flex-direction: row; align-items: center;
+      gap: 8px; flex-wrap: wrap;
+    }
+    .tag-active {
+      height: 24px; padding: 0 8px;
+      border-radius: 4px;
+      background: var(--c-green-bg);
+      border: 1px solid rgba(15,21,26,0.08);
+      font-size: 14px; line-height: 24px;
+      color: var(--c-green-text);
+      white-space: nowrap;
+    }
+    .job-detail-text { font-size: 16px; line-height: 20px; color: var(--c-text); }
+    .dot { font-size: 16px; line-height: 20px; color: var(--c-text); }
+
+    .job-actions {
+      display: flex; flex-direction: row; align-items: center;
+      gap: 8px; flex-shrink: 0;
+    }
+    .btn-outline {
+      height: 48px;
+      border-radius: 8px;
+      background: transparent;
+      border: 2px solid var(--c-border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 600; font-size: 16px;
+      color: var(--c-text);
+    }
+    .btn-outline.btn-edit { padding: 0 16px; }
+    .btn-outline.btn-more {
+      width: 48px; padding: 0 12px;
+      color: var(--c-text);
+    }
+    .btn-outline.btn-more svg { width: 4px; height: 16px; display: block; }
+
+    .section-label {
+      font-weight: 700; font-size: 18px; line-height: 24px;
+      color: var(--c-text);
+    }
+
+    /* ── Metric cards ──────────────────────────────────────────── */
+    .metrics-row { display: flex; gap: 24px; }
+    .metric-card {
+      flex: 1; height: 96px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: var(--shadow-card);
+      padding: 16px 16px 8px 16px;
+      display: flex; flex-direction: column;
+    }
+    .metric-value {
+      font-weight: 700; font-size: 24px; line-height: 32px;
+      color: var(--c-text);
+    }
+    .metric-label {
+      font-size: 16px; line-height: 20px;
+      color: var(--c-muted);
+      margin-top: 8px;
+    }
+
+    /* ── Actions rail ──────────────────────────────────────────── */
+    .actions-rail {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 48px;
+    }
+    .actions-left { display: flex; gap: 8px; align-items: center; }
+    .btn-filter {
+      height: 48px;
+      border-radius: 8px;
+      background: transparent;
+      border: 2px solid var(--c-border);
+      display: flex; align-items: center; gap: 8px;
+      padding: 0 16px;
+      cursor: pointer;
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 600; font-size: 16px;
+      color: var(--c-text);
+      white-space: nowrap;
+    }
+    .btn-filter .caret { display: block; flex-shrink: 0; }
+
+    /* ── Dropdown ──────────────────────────────────────────────── */
+    .dropdown-wrap { position: relative; }
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      width: 184px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 28px 0 rgba(0,0,0,0.13);
+      padding: 8px 0;
+      z-index: 300;
+      display: none;
+      flex-direction: column;
+    }
+    .dropdown-menu.open { display: flex; }
+    .dropdown-item {
+      width: 100%; height: 56px;
+      padding: 0 8px;
+      display: flex; align-items: center;
+      background: none; border: none;
+      cursor: pointer;
+      font-family: "Red Hat Text", sans-serif;
+    }
+    .dropdown-item-inner {
+      width: 100%; height: 56px;
+      border-radius: 8px;
+      display: flex; align-items: center;
+      padding: 0 16px;
+      font-size: 16px; line-height: 20px;
+      color: var(--c-text);
+      transition: background 0.15s ease;
+    }
+    .dropdown-item:hover .dropdown-item-inner { background: rgba(15,21,26,0.04); }
+    .dropdown-item.selected .dropdown-item-inner { background: var(--c-lavender); }
+
+    .results-info { font-size: 16px; line-height: 20px; color: var(--c-text); }
+
+    /* ── Candidate list ────────────────────────────────────────── */
+    .candidate-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .candidate-card { width: 1076px; }
+    .candidate-card {
+      background: #fff;
+      border: 1px solid var(--c-border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex; flex-direction: column;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .candidate-card.removing { opacity: 0; transform: scale(0.92); pointer-events: none; }
+    .candidate-card.removed { display: none; }
+
+    .card-top {
+      display: flex; flex-direction: row;
+      align-items: flex-start; justify-content: space-between;
+      padding-bottom: 16px;
+    }
+    .card-name {
+      font-weight: 700; font-size: 16px; line-height: 20px;
+      color: var(--c-text);
+    }
+    .card-active {
+      font-size: 14px; line-height: 16px;
+      color: var(--c-muted);
+      margin-top: 4px;
+    }
+    .card-actions {
+      display: flex; flex-direction: row; gap: 8px;
+      align-items: center; flex-shrink: 0;
+    }
+    .btn-view {
+      width: 120px;
+      height: 40px; padding: 0 16px;
+      border-radius: 8px;
+      border: 2px solid var(--c-navy);
+      background: transparent;
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 600; font-size: 16px;
+      color: var(--c-navy);
+      cursor: pointer;
+    }
+    .btn-icon {
+      height: 40px;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: 2px solid var(--c-border);
+      background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: var(--c-text);
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 600; font-size: 16px;
+    }
+    .btn-icon svg { display: none; }
+
+    .card-divider {
+      width: calc(100% + 32px);
+      margin-left: -16px;
+      height: 1px;
+      background: var(--c-border);
+    }
+    .card-fields {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      padding: 16px 0;
+    }
+    .card-field-label {
+      font-size: 14px; line-height: 16px;
+      color: var(--c-muted);
+      margin-bottom: 4px;
+    }
+    .card-field-value {
+      font-size: 16px; line-height: 20px;
+      color: var(--c-text);
+    }
+    .card-skills-label {
+      font-size: 14px; line-height: 16px;
+      color: var(--c-muted);
+      margin-bottom: 8px;
+    }
+    .card-chips {
+      display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap;
+    }
+    .chip {
+      height: 36px;
+      padding: 0 12px;
+      border-radius: 4px;
+      background: rgba(15,21,26,0.03);
+      font-size: 16px; line-height: 36px;
+      color: var(--c-text);
+      white-space: nowrap;
+    }
+
+    /* ── Invited card footer ───────────────────────────────────── */
+    .card-invited-footer { display: flex; flex-direction: column; }
+    .card-invited-divider {
+      width: calc(100% + 32px);
+      margin-left: -16px;
+      height: 1px;
+      background: var(--c-border);
+      margin-top: 16px;
+    }
+    .card-invited-status {
+      display: flex; align-items: center; gap: 4px;
+      padding-top: 16px;
+    }
+    .card-invited-check {
+      width: 24px; height: 24px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--c-green-text);
+    }
+    .card-invited-check svg { width: 16px; height: 12px; display: block; }
+    .card-invited-label {
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 700; font-size: 16px; line-height: 20px;
+      color: var(--c-green-text);
+    }
+
+    /* ── Toast ─────────────────────────────────────────────────── */
+    .toast-alert {
+      position: fixed;
+      top: 80px; right: 24px;
+      z-index: 9999;
+      width: 265px; height: 72px;
+      border-radius: 12px;
+      background: var(--c-green-bg);
+      display: flex; flex-direction: row; align-items: center;
+      padding: 16px 16px 16px 24px;
+      gap: 12px;
+      box-shadow: 0 4px 16px rgba(15,21,26,0.12);
+      opacity: 0;
+      transform: translateX(20px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
+    }
+    .toast-alert.visible { opacity: 1; transform: translateX(0); pointer-events: all; }
+    .toast-alert.hiding { opacity: 0; transform: translateX(20px); }
+    .toast-icon {
+      width: 24px; height: 24px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--c-green-text);
+    }
+    .toast-icon svg { width: 20px; height: 20px; display: block; }
+    .toast-body {
+      flex: 1;
+      font-family: "Red Hat Text", sans-serif;
+      font-size: 16px; line-height: 24px;
+      color: var(--c-text);
+    }
+    .toast-close {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      padding: 0;
+      color: var(--c-text);
+    }
+    .toast-close svg { width: 13px; height: 13px; display: block; }
+
+    /* ── Candidate profile modal (lightbox + bottom sheet) ─────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,21,26,0.55);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal-panel {
+      width: 1140px;
+      max-width: 100%;
+      max-height: 90vh;
+      background: #fff;
+      border-radius: 16px 16px 0 0;
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      transform: translateY(40px);
+      transition: transform 0.35s ease;
+    }
+    .modal-overlay.open .modal-panel { transform: translateY(0); }
+
+    .modal-header {
+      height: 64px;
+      background: #fff;
+      border-radius: 16px 16px 0 0;
+      display: flex; align-items: center; justify-content: flex-end;
+      padding: 12px 8px;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--c-border);
+    }
+    .modal-close-btn {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: var(--c-text);
+    }
+    .modal-close-btn svg { width: 13px; height: 13px; display: block; }
+
+    .modal-body {
+      display: flex; flex-direction: row;
+      gap: 48px;
+      padding: 0 64px 56px 64px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .modal-left {
+      width: 364px;
+      flex-shrink: 0;
+      display: flex; flex-direction: column;
+      gap: 16px;
+      padding-top: 24px;
+    }
+    .modal-candidate-name {
+      font-weight: 700; font-size: 16px; line-height: 20px;
+      color: #000;
+    }
+    .modal-candidate-meta {
+      font-size: 14px; line-height: 16px;
+      color: var(--c-muted);
+      margin-top: 4px;
+    }
+    .modal-divider {
+      height: 1px;
+      background: var(--c-border);
+      margin: 8px 0;
+    }
+    .modal-pre-invite, .modal-post-invite {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .modal-invited-status {
+      display: flex; align-items: center; gap: 4px;
+    }
+    .modal-alert {
+      border-radius: 12px;
+      background: rgba(15,21,26,0.03);
+      padding: 16px 16px 16px 24px;
+      display: flex; flex-direction: row; gap: 12px;
+      align-items: flex-start;
+      position: relative;
+    }
+    .modal-alert-icon {
+      width: 24px; height: 24px;
+      flex-shrink: 0;
+      margin-top: 8px;
+      color: var(--c-text);
+    }
+    .modal-alert-icon svg { width: 20px; height: 20px; display: block; }
+    .modal-alert-text {
+      font-size: 16px; line-height: 24px;
+      color: var(--c-text);
+      flex: 1;
+    }
+    .modal-alert-dismiss {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: var(--c-text);
+    }
+    .modal-alert-dismiss svg { width: 13px; height: 13px; display: block; }
+
+    .modal-invites { font-size: 16px; line-height: 20px; color: #000; }
+    .modal-actions { display: flex; flex-direction: column; gap: 8px; }
+    .btn-send-invite {
+      width: 100%; height: 48px;
+      border-radius: 8px;
+      background: var(--c-pink);
+      border: none;
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 600; font-size: 16px;
+      color: #fff;
+      cursor: pointer;
+    }
+    .btn-not-suitable {
+      width: 100%; height: 48px;
+      border-radius: 8px;
+      background: transparent;
+      border: 2px solid var(--c-border);
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 600; font-size: 16px;
+      color: var(--c-text);
+      cursor: pointer;
+    }
+    .btn-preview-invite {
+      width: 100%; height: 48px;
+      border-radius: 8px;
+      background: transparent;
+      border: none;
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 600; font-size: 16px;
+      color: var(--c-blue);
+      cursor: pointer;
+    }
+
+    .modal-right {
+      flex: 1;
+      display: flex; flex-direction: column;
+      gap: 16px;
+      padding-top: 24px;
+      min-width: 0;
+    }
+    .modal-tabs {
+      display: flex; flex-direction: row;
+      gap: 4px;
+      border: 1px solid var(--c-border);
+      border-radius: 12px;
+      padding: 4px;
+      width: fit-content;
+    }
+    .modal-tab {
+      height: 40px;
+      padding: 0 24px;
+      border-radius: 8px;
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 600; font-size: 16px;
+      color: var(--c-text);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+    }
+    .modal-tab.active { background: var(--c-lavender); }
+
+    /* ── PDF / CV viewer ───────────────────────────────────────── */
+    .modal-pdf-viewer {
+      border-radius: 4px;
+      overflow: hidden;
+      border: 3px solid var(--c-pdf-frame);
+    }
+    .modal-pdf-header {
+      background: var(--c-pdf-frame);
+      height: 48px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .modal-pdf-header span { font-size: 16px; line-height: 20px; color: #fff; }
+    .modal-pdf-body {
+      background: var(--c-pdf-body);
+      height: 700px;
+      overflow-y: auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 24px;
+    }
+
+    .cv-doc {
+      width: 100%;
+      max-width: 680px;
+      background: #fff;
+      padding: 48px 56px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+      font-family: "Red Hat Text", sans-serif;
+      color: var(--c-text);
+    }
+    .cv-name {
+      font-size: 28px; font-weight: 700; line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .cv-role {
+      font-size: 16px; color: var(--c-muted);
+      margin-bottom: 16px;
+    }
+    .cv-contact {
+      display: flex; flex-wrap: wrap; gap: 16px;
+      font-size: 14px; color: var(--c-muted);
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--c-border);
+      margin-bottom: 24px;
+    }
+    .cv-section { margin-bottom: 24px; }
+    .cv-section-title {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--c-border);
+    }
+    .cv-entry { margin-bottom: 16px; }
+    .cv-entry-header {
+      display: flex; justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2px;
+    }
+    .cv-entry-title { font-weight: 700; font-size: 15px; }
+    .cv-entry-date { font-size: 13px; color: var(--c-muted); white-space: nowrap; }
+    .cv-entry-sub { font-size: 14px; color: var(--c-muted); margin-bottom: 6px; }
+    .cv-entry-body { font-size: 14px; line-height: 1.6; color: var(--c-pdf-frame); }
+    .cv-skills-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .cv-skill-chip {
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 4px;
+      background: rgba(15,21,26,0.05);
+      font-size: 13px; line-height: 28px;
+      color: var(--c-text);
+    }
+    .cv-redacted {
+      display: inline-block;
+      background: var(--c-text);
+      color: transparent;
+      border-radius: 2px;
+      user-select: none;
+      line-height: 1;
+    }
+
+    /* ── Improve modal ─────────────────────────────────────────── */
+    .improve-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,21,26,0.55);
+      z-index: 250;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .improve-overlay.open { opacity: 1; pointer-events: all; }
+    .improve-panel {
+      width: 500px;
+      max-width: calc(100% - 32px);
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px 0 rgba(15,21,26,0.03), 0 16px 48px rgba(15,21,26,0.18);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      transform: translateY(16px) scale(0.98);
+      transition: transform 0.25s ease;
+      font-family: "Red Hat Text", sans-serif;
+    }
+    .improve-overlay.open .improve-panel { transform: translateY(0) scale(1); }
+    .improve-header {
+      display: flex; align-items: flex-start; gap: 8px;
+      padding: 16px 16px 0 24px;
+    }
+    .improve-title {
+      flex: 1;
+      font-weight: 700; font-size: 24px; line-height: 32px;
+      color: var(--c-text);
+      padding: 4px 0;
+    }
+    .improve-close {
+      width: 40px; height: 40px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: var(--c-text);
+    }
+    .improve-close:hover { background: rgba(15,21,26,0.05); }
+    .improve-close svg { width: 13px; height: 13px; display: block; }
+
+    .improve-content {
+      padding: 16px 24px 8px 24px;
+      display: flex; flex-direction: column; gap: 24px;
+    }
+    .improve-question {
+      font-size: 16px; line-height: 24px;
+      color: #000;
+    }
+    .improve-question b { font-weight: 700; }
+    .improve-options { display: flex; flex-direction: column; gap: 12px; }
+    .improve-radio {
+      display: flex; flex-direction: row; align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .improve-radio input { position: absolute; opacity: 0; pointer-events: none; }
+    .improve-radio-circle {
+      width: 24px; height: 24px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .improve-radio-circle::before {
+      content: "";
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 1px solid rgb(160,160,162);
+      box-sizing: border-box;
+      transition: border-color 0.15s ease, border-width 0.15s ease;
+    }
+    .improve-radio:hover .improve-radio-circle::before { border-color: var(--c-text); }
+    .improve-radio input:checked + .improve-radio-circle::before {
+      border: 6px solid var(--c-text);
+    }
+    .improve-radio-label {
+      font-size: 16px; line-height: 20px;
+      color: var(--c-text);
+      padding: 2px 0;
+    }
+    .improve-footer {
+      display: flex; justify-content: flex-end;
+      padding: 16px 24px 24px 24px;
+    }
+    .improve-submit {
+      height: 40px; min-width: 120px;
+      padding: 0 16px;
+      border-radius: 8px;
+      background: transparent;
+      border: 2px solid var(--c-border);
+      font-family: "Red Hat Text", sans-serif;
+      font-weight: 700; font-size: 16px; line-height: 20px;
+      color: var(--c-text);
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+    .improve-submit:hover {
+      background: var(--c-text);
+      border-color: var(--c-text);
+      color: #fff;
+    }
+
+    /* ── Profile pane ──────────────────────────────────────────── */
+    #profile-pane {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+    #profile-pane.active { display: flex; }
+    .profile-section {
+      border: 1px solid var(--c-border);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex; flex-direction: row;
+      gap: 24px;
+    }
+    .profile-section-title {
+      flex: 0 0 152px;
+      font-weight: 700; font-size: 16px; line-height: 20px;
+      color: var(--c-text);
+    }
+    .profile-section-content {
+      flex: 1;
+      display: flex; flex-direction: column;
+      gap: 24px;
+      min-width: 0;
+    }
+    .profile-field { display: flex; flex-direction: column; gap: 4px; }
+    .profile-field-label {
+      font-weight: 700; font-size: 16px; line-height: 20px;
+      color: var(--c-text);
+    }
+    .profile-field-value {
+      font-size: 16px; line-height: 24px;
+      color: var(--c-text);
+    }
+    .profile-field-value-muted {
+      font-size: 16px; line-height: 24px;
+      color: var(--c-muted);
+    }
+    .profile-chip-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .profile-chip {
+      display: inline-flex; align-items: center;
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 16px;
+      background: rgb(243,243,244);
+      font-size: 14px; line-height: 20px;
+      color: var(--c-text);
+    }
+    .profile-chip-lang .fluency { color: var(--c-muted); margin-left: 6px; }
+    .profile-statement { font-size: 16px; line-height: 24px; color: var(--c-text); }
+    .profile-experience-entry,
+    .profile-qual-entry { display: flex; flex-direction: column; gap: 2px; }
+    .profile-experience-entry + .profile-experience-entry,
+    .profile-qual-entry + .profile-qual-entry { margin-top: 16px; }
+  </style>
+</head>
+<body>
+
+  <!-- React + Babel for Tweaks panel -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+
+  <div id="tweaks-root"></div>
+
+  <script type="text/babel">
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "navBtnBg": "transparent",
+      "navBtnHoverBg": "transparent"
+    }/*EDITMODE-END*/;
+
+    function TweaksApp() {
+      const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+      React.useEffect(() => {
+        document.documentElement.style.setProperty('--nav-btn-bg', t.navBtnBg);
+        document.documentElement.style.setProperty('--nav-btn-hover-bg', t.navBtnHoverBg);
+      }, [t.navBtnBg, t.navBtnHoverBg]);
+      return (
+        <TweaksPanel title="Tweaks">
+          <TweakSection label="Top nav buttons (Basket / Name)">
+            <TweakRadio
+              label="Background"
+              value={t.navBtnBg}
+              onChange={v => setTweak('navBtnBg', v)}
+              options={[
+                { value: 'transparent', label: 'None' },
+                { value: 'rgba(15,21,26,0.04)', label: 'Grey' },
+              ]}
+            />
+            <TweakRadio
+              label="Hover background"
+              value={t.navBtnHoverBg}
+              onChange={v => setTweak('navBtnHoverBg', v)}
+              options={[
+                { value: 'transparent', label: 'None' },
+                { value: 'rgba(15,21,26,0.04)', label: 'Grey' },
+              ]}
+            />
+          </TweakSection>
+          <TweakSection label="Prototype">
+            <TweakButton
+              label="Reset candidates"
+              onClick={() => {
+                try { localStorage.removeItem('jt-candidate-state-v1'); } catch (e) {}
+                location.reload();
+              }}
+            />
+          </TweakSection>
+        </TweaksPanel>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<TweaksApp />);
+  </script>
+
+  <!-- ── Top Navigation ────────────────────────────────────────── -->
+  <nav class="topnav">
+    <div class="topnav-left">
+      <a class="logo" href="Welcome.html">Jobstogo</a>
+      <div class="nav-items">
+        <a class="nav-item" href="#">Campaigns</a>
+        <a class="nav-item active" href="Jobs.html" style="font-weight: 600">Jobs &amp; Applications</a>
+        <a class="nav-item" href="#">CV Search</a>
+        <a class="nav-item" href="#">Your candidates</a>
+      </div>
+    </div>
+    <div class="topnav-right">
+      <button class="nav-btn" type="button">
+        <svg class="icon" width="22" height="19" viewBox="0 0 22.186 19" fill="none" aria-hidden="true">
+          <path fill="currentColor" fill-rule="nonzero" d="M 4.093 19 C 3.81 19 3.551 18.913 3.318 18.738 C 3.085 18.563 2.926 18.333 2.843 18.05 L 0.043 7.95 C -0.04 7.717 -0.003 7.5 0.155 7.3 C 0.314 7.1 0.526 7 0.793 7 L 5.843 7 L 10.243 0.45 C 10.326 0.317 10.443 0.208 10.593 0.125 C 10.743 0.042 10.901 0 11.068 0 C 11.235 0 11.393 0.042 11.543 0.125 C 11.693 0.208 11.81 0.317 11.893 0.45 L 16.293 7 L 21.393 7 C 21.66 7 21.872 7.1 22.031 7.3 C 22.189 7.5 22.226 7.717 22.143 7.95 L 19.343 18.05 C 19.26 18.333 19.101 18.563 18.868 18.738 C 18.635 18.913 18.376 19 18.093 19 L 4.093 19 Z M 4.593 17 L 17.593 17 L 19.793 9 L 2.393 9 L 4.593 17 Z M 11.093 15 C 11.643 15 12.114 14.804 12.506 14.413 C 12.897 14.021 13.093 13.55 13.093 13 C 13.093 12.45 12.897 11.979 12.506 11.587 C 12.114 11.196 11.643 11 11.093 11 C 10.543 11 10.072 11.196 9.681 11.587 C 9.289 11.979 9.093 12.45 9.093 13 C 9.093 13.55 9.289 14.021 9.681 14.413 C 10.072 14.804 10.543 15 11.093 15 Z M 8.268 7 L 13.893 7 L 11.068 2.8 L 8.268 7 Z"/>
+        </svg>
+        <span>Basket</span>
+      </button>
+      <button class="nav-btn" type="button">
+        <svg class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path fill="currentColor" fill-rule="nonzero" d="M 8 8 C 6.9 8 5.958 7.608 5.175 6.825 C 4.392 6.042 4 5.1 4 4 C 4 2.9 4.392 1.958 5.175 1.175 C 5.958 0.392 6.9 0 8 0 C 9.1 0 10.042 0.392 10.825 1.175 C 11.608 1.958 12 2.9 12 4 C 12 5.1 11.608 6.042 10.825 6.825 C 10.042 7.608 9.1 8 8 8 Z M 14 16 L 2 16 C 1.45 16 0.979 15.804 0.588 15.413 C 0.196 15.021 0 14.55 0 14 L 0 13.2 C 0 12.633 0.146 12.112 0.438 11.637 C 0.729 11.162 1.117 10.8 1.6 10.55 C 2.633 10.033 3.683 9.646 4.75 9.387 C 5.817 9.129 6.9 9 8 9 C 9.1 9 10.183 9.129 11.25 9.387 C 12.317 9.646 13.367 10.033 14.4 10.55 C 14.883 10.8 15.271 11.162 15.562 11.637 C 15.854 12.112 16 12.633 16 13.2 L 16 14 C 16 14.55 15.804 15.021 15.413 15.413 C 15.021 15.804 14.55 16 14 16 Z M 2 14 L 14 14 L 14 13.2 C 14 13.017 13.954 12.85 13.863 12.7 C 13.771 12.55 13.65 12.433 13.5 12.35 C 12.6 11.9 11.692 11.562 10.775 11.337 C 9.858 11.112 8.933 11 8 11 C 7.067 11 6.142 11.112 5.225 11.337 C 4.308 11.562 3.4 11.9 2.5 12.35 C 2.35 12.433 2.229 12.55 2.138 12.7 C 2.046 12.85 2 13.017 2 13.2 L 2 14 Z M 8 6 C 8.55 6 9.021 5.804 9.413 5.412 C 9.804 5.021 10 4.55 10 4 C 10 3.45 9.804 2.979 9.413 2.588 C 9.021 2.196 8.55 2 8 2 C 7.45 2 6.979 2.196 6.588 2.588 C 6.196 2.979 6 3.45 6 4 C 6 4.55 6.196 5.021 6.588 5.412 C 6.979 5.804 7.45 6 8 6 Z"/>
+        </svg>
+        <span>Name</span>
+        <svg class="caret" width="10" height="5" viewBox="0 0 10 5" fill="rgb(15,21,26)" aria-hidden="true">
+          <path d="M5 5L0 0L10 0L5 5Z" fill-rule="nonzero" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Page ──────────────────────────────────────────────────── -->
+  <main class="page">
+
+    <!-- Header block -->
+    <div class="header-block">
+      <div class="header-row">
+        <div class="header-left">
+          <div class="title-row">
+            <button class="back-btn" type="button" aria-label="Back">
+              <svg viewBox="0 0 15.575 15.188" fill="none" aria-hidden="true">
+                <path fill="currentColor" fill-rule="nonzero" d="M 6.875 14.888 L 0.275 8.288 C 0.175 8.188 0.104 8.08 0.063 7.963 C 0.021 7.846 0 7.721 0 7.588 C 0 7.455 0.021 7.33 0.063 7.213 C 0.104 7.096 0.175 6.988 0.275 6.888 L 6.875 0.288 C 7.058 0.105 7.287 0.009 7.563 0 C 7.838 -0.008 8.075 0.088 8.275 0.288 C 8.475 0.471 8.579 0.701 8.588 0.976 C 8.596 1.251 8.5 1.488 8.3 1.688 L 3.4 6.588 L 14.575 6.588 C 14.858 6.588 15.096 6.684 15.288 6.875 C 15.479 7.067 15.575 7.305 15.575 7.588 C 15.575 7.871 15.479 8.109 15.288 8.3 C 15.096 8.492 14.858 8.588 14.575 8.588 L 3.4 8.588 L 8.3 13.488 C 8.483 13.671 8.579 13.905 8.588 14.188 C 8.596 14.471 8.5 14.705 8.3 14.888 C 8.117 15.088 7.883 15.188 7.6 15.188 C 7.317 15.188 7.075 15.088 6.875 14.888 Z"/>
+              </svg>
+            </button>
+            <h1 class="job-title">WCA Nurse Assessor</h1>
+          </div>
+          <div class="job-details">
+            <span class="tag-active">Active</span>
+            <span class="job-detail-text">Holborn, London</span>
+            <span class="dot">•</span>
+            <span class="job-detail-text">£30,000 p.a.</span>
+            <span class="dot">•</span>
+            <span class="job-detail-text">Feb 3rd – Mar 20th, 2026</span>
+            <span class="dot">•</span>
+            <span class="job-detail-text">Pay-Per-Application</span>
+            <span class="dot">•</span>
+            <span class="job-detail-text">Ref: Medical jobs</span>
+          </div>
+        </div>
+      </div>
+      <span class="section-label">Invite matching candidates</span>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics-row">
+      <div class="metric-card">
+        <span class="metric-value" id="matches-count">8</span>
+        <span class="metric-label">Matches</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value" id="invited-count">0</span>
+        <span class="metric-label">Invited</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value" id="invites-remaining">15</span>
+        <span class="metric-label">Invites remaining</span>
+      </div>
+    </div>
+
+    <!-- Actions rail -->
+    <div class="actions-rail">
+      <div class="actions-left">
+        <div class="dropdown-wrap">
+          <button class="btn-filter" id="filter-btn" type="button">
+            <span id="filter-label">Matches</span>
+            <svg class="caret" width="10" height="5" viewBox="0 0 10 5" fill="rgb(15,21,26)" aria-hidden="true">
+              <path d="M5 5L0 0L10 0L5 5Z" />
+            </svg>
+          </button>
+          <div class="dropdown-menu" id="filter-dropdown" role="menu">
+            <button class="dropdown-item selected" type="button" data-value="matches" role="menuitem">
+              <div class="dropdown-item-inner">Matches</div>
+            </button>
+            <button class="dropdown-item" type="button" data-value="invited" role="menuitem">
+              <div class="dropdown-item-inner">Invited</div>
+            </button>
+          </div>
+        </div>
+        <button class="btn-filter" type="button">
+          Last active date
+          <svg class="caret" width="10" height="5" viewBox="0 0 10 5" fill="rgb(15,21,26)" aria-hidden="true">
+            <path d="M5 5L0 0L10 0L5 5Z" />
+          </svg>
+        </button>
+      </div>
+      <span class="results-info" id="results-info">1 – 8 of 8 matches</span>
+    </div>
+
+    <!-- Candidate grid -->
+    <div class="candidate-grid">
+      <div class="candidate-card" data-view="matches">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Sophia</div>
+            <div class="card-active">Last active 5 hours ago</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-view" type="button">View</button>
+            <button class="btn-icon" type="button">Not suitable</button>
+          </div>
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-fields">
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Staff Nurse</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Nurse Assessor</div></div>
+          <div><div class="card-field-label">Location</div><div class="card-field-value">Camden, London</div></div>
+          <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
+        </div>
+        <div class="card-skills-label">Matching skills</div>
+        <div class="card-chips">
+          <span class="chip">Clinical Assessment</span>
+          <span class="chip">WCA</span>
+        </div>
+      </div>
+      <div class="candidate-card" data-view="matches">
+        <div class="card-top">
+          <div>
+            <div class="card-name">James</div>
+            <div class="card-active">Last active 1 day ago</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-view" type="button">View</button>
+            <button class="btn-icon" type="button">Not suitable</button>
+          </div>
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-fields">
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Mental Health Nurse</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Nurse Assessor</div></div>
+          <div><div class="card-field-label">Location</div><div class="card-field-value">Islington, London</div></div>
+          <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
+        </div>
+        <div class="card-skills-label">Matching skills</div>
+        <div class="card-chips">
+          <span class="chip">Patient Care</span>
+          <span class="chip">Assessment</span>
+          <span class="chip">PIP</span>
+        </div>
+      </div>
+      <div class="candidate-card" data-view="matches">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Amara</div>
+            <div class="card-active">Last active 3 hours ago</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-view" type="button">View</button>
+            <button class="btn-icon" type="button">Not suitable</button>
+          </div>
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-fields">
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Physiotherapist</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">WCA Assessor</div></div>
+          <div><div class="card-field-label">Location</div><div class="card-field-value">Holborn, London</div></div>
+          <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
+        </div>
+        <div class="card-skills-label">Matching skills</div>
+        <div class="card-chips">
+          <span class="chip">Physiotherapy</span>
+          <span class="chip">Assessment</span>
+        </div>
+      </div>
+      <div class="candidate-card" data-view="matches">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Daniel</div>
+            <div class="card-active">Last active 2 days ago</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-view" type="button">View</button>
+            <button class="btn-icon" type="button">Not suitable</button>
+          </div>
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-fields">
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Occupational Therapist</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Nurse Assessor</div></div>
+          <div><div class="card-field-label">Location</div><div class="card-field-value">Westminster, London</div></div>
+          <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
+        </div>
+        <div class="card-skills-label">Matching skills</div>
+        <div class="card-chips">
+          <span class="chip">OT Assessment</span>
+          <span class="chip">WCA</span>
+          <span class="chip">Report Writing</span>
+        </div>
+      </div>
+      <div class="candidate-card" data-view="matches">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Priya</div>
+            <div class="card-active">Last active 4 hours ago</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-view" type="button">View</button>
+            <button class="btn-icon" type="button">Not suitable</button>
+          </div>
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-fields">
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Registered Nurse</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Nurse Assessor</div></div>
+          <div><div class="card-field-label">Location</div><div class="card-field-value">Southwark, London</div></div>
+          <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
+        </div>
+        <div class="card-skills-label">Matching skills</div>
+        <div class="card-chips">
+          <span class="chip">Clinical Assessment</span>
+          <span class="chip">PIP</span>
+        </div>
+      </div>
+      <div class="candidate-card" data-view="matches">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Tom</div>
+            <div class="card-active">Last active 6 hours ago</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-view" type="button">View</button>
+            <button class="btn-icon" type="button">Not suitable</button>
+          </div>
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-fields">
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Paramedic</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">WCA Assessor</div></div>
+          <div><div class="card-field-label">Location</div><div class="card-field-value">Lambeth, London</div></div>
+          <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
+        </div>
+        <div class="card-skills-label">Matching skills</div>
+        <div class="card-chips">
+          <span class="chip">Triage</span>
+          <span class="chip">Assessment</span>
+          <span class="chip">WCA</span>
+        </div>
+      </div>
+      <div class="candidate-card" data-view="matches">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Fatima</div>
+            <div class="card-active">Last active 1 hour ago</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-view" type="button">View</button>
+            <button class="btn-icon" type="button">Not suitable</button>
+          </div>
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-fields">
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Community Nurse</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Nurse Assessor</div></div>
+          <div><div class="card-field-label">Location</div><div class="card-field-value">Hackney, London</div></div>
+          <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
+        </div>
+        <div class="card-skills-label">Matching skills</div>
+        <div class="card-chips">
+          <span class="chip">Patient Care</span>
+          <span class="chip">Clinical Assessment</span>
+        </div>
+      </div>
+      <div class="candidate-card" data-view="matches">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Marcus</div>
+            <div class="card-active">Last active 3 days ago</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-view" type="button">View</button>
+            <button class="btn-icon" type="button">Not suitable</button>
+          </div>
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-fields">
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">GP Practice Nurse</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">WCA Assessor</div></div>
+          <div><div class="card-field-label">Location</div><div class="card-field-value">Tower Hamlets, London</div></div>
+          <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
+        </div>
+        <div class="card-skills-label">Matching skills</div>
+        <div class="card-chips">
+          <span class="chip">Assessment</span>
+          <span class="chip">PIP</span>
+          <span class="chip">WCA</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Toast ────────────────────────────────────────────────── -->
+  <div class="toast-alert" id="toast-alert" role="status" aria-live="polite">
+    <div class="toast-icon">
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path fill="currentColor" fill-rule="nonzero" d="M 8.6 11.8 L 6.45 9.65 C 6.267 9.467 6.033 9.375 5.75 9.375 C 5.467 9.375 5.233 9.467 5.05 9.65 C 4.867 9.833 4.775 10.067 4.775 10.35 C 4.775 10.633 4.867 10.867 5.05 11.05 L 7.9 13.9 C 8.1 14.1 8.333 14.2 8.6 14.2 C 8.867 14.2 9.1 14.1 9.3 13.9 L 14.95 8.25 C 15.133 8.067 15.225 7.833 15.225 7.55 C 15.225 7.267 15.133 7.033 14.95 6.85 C 14.767 6.667 14.533 6.575 14.25 6.575 C 13.967 6.575 13.733 6.667 13.55 6.85 L 8.6 11.8 Z M 10 20 C 8.617 20 7.317 19.737 6.1 19.212 C 4.883 18.688 3.825 17.975 2.925 17.075 C 2.025 16.175 1.313 15.117 0.788 13.9 C 0.262 12.683 0 11.383 0 10 C 0 8.617 0.262 7.317 0.788 6.1 C 1.313 4.883 2.025 3.825 2.925 2.925 C 3.825 2.025 4.883 1.313 6.1 0.788 C 7.317 0.262 8.617 0 10 0 C 11.383 0 12.683 0.262 13.9 0.788 C 15.117 1.313 16.175 2.025 17.075 2.925 C 17.975 3.825 18.688 4.883 19.212 6.1 C 19.737 7.317 20 8.617 20 10 C 20 11.383 19.737 12.683 19.212 13.9 C 18.688 15.117 17.975 16.175 17.075 17.075 C 16.175 17.975 15.117 18.688 13.9 19.212 C 12.683 19.737 11.383 20 10 20 Z"/>
+      </svg>
+    </div>
+    <div class="toast-body" id="toast-body">Invite sent.</div>
+    <button class="toast-close" id="toast-close" type="button" aria-label="Dismiss">
+      <svg viewBox="0 0 13.150 13.150" fill="none" aria-hidden="true"><path fill="currentColor" fill-rule="nonzero" d="M 6.575 7.975 L 1.675 12.875 C 1.492 13.058 1.258 13.15 0.975 13.15 C 0.692 13.15 0.458 13.058 0.275 12.875 C 0.092 12.692 0 12.458 0 12.175 C 0 11.892 0.092 11.658 0.275 11.475 L 5.175 6.575 L 0.275 1.675 C 0.092 1.492 0 1.258 0 0.975 C 0 0.692 0.092 0.458 0.275 0.275 C 0.458 0.092 0.692 0 0.975 0 C 1.258 0 1.492 0.092 1.675 0.275 L 6.575 5.175 L 11.475 0.275 C 11.658 0.092 11.892 0 12.175 0 C 12.458 0 12.692 0.092 12.875 0.275 C 13.058 0.458 13.15 0.692 13.15 0.975 C 13.15 1.258 13.058 1.492 12.875 1.675 L 7.975 6.575 L 12.875 11.475 C 13.058 11.658 13.15 11.892 13.15 12.175 C 13.15 12.458 13.058 12.692 12.875 12.875 C 12.692 13.058 12.458 13.15 12.175 13.15 C 11.892 13.15 11.658 13.058 11.475 12.875 L 6.575 7.975 Z"/></svg>
+    </button>
+  </div>
+
+  <!-- ── Improve Matches modal ────────────────────────────────── -->
+  <div class="improve-overlay" id="improve-overlay" role="dialog" aria-modal="true" aria-labelledby="improve-title">
+    <div class="improve-panel" role="document">
+      <div class="improve-header">
+        <div class="improve-title" id="improve-title">Help us improve our matches</div>
+        <button class="improve-close" id="improve-close" type="button" aria-label="Close">
+          <svg viewBox="0 0 13.150 13.150" fill="none" aria-hidden="true"><path fill="currentColor" fill-rule="nonzero" d="M 6.575 7.975 L 1.675 12.875 C 1.492 13.058 1.258 13.15 0.975 13.15 C 0.692 13.15 0.458 13.058 0.275 12.875 C 0.092 12.692 0 12.458 0 12.175 C 0 11.892 0.092 11.658 0.275 11.475 L 5.175 6.575 L 0.275 1.675 C 0.092 1.492 0 1.258 0 0.975 C 0 0.692 0.092 0.458 0.275 0.275 C 0.458 0.092 0.692 0 0.975 0 C 1.258 0 1.492 0.092 1.675 0.275 L 6.575 5.175 L 11.475 0.275 C 11.658 0.092 11.892 0 12.175 0 C 12.458 0 12.692 0.092 12.875 0.275 C 13.058 0.458 13.15 0.692 13.15 0.975 C 13.15 1.258 13.058 1.492 12.875 1.675 L 7.975 6.575 L 12.875 11.475 C 13.058 11.658 13.15 11.892 13.15 12.175 C 13.15 12.458 13.058 12.692 12.875 12.875 C 12.692 13.058 12.458 13.15 12.175 13.15 C 11.892 13.15 11.658 13.058 11.475 12.875 L 6.575 7.975 Z"/></svg>
+        </button>
+      </div>
+      <div class="improve-content">
+        <div class="improve-question">
+          Why isn't <b id="improve-name">candidate</b> suitable for this role?
+        </div>
+        <div class="improve-options" role="radiogroup" aria-labelledby="improve-title">
+          <label class="improve-radio">
+            <input type="radio" name="improve-reason" value="missing-skills" />
+            <span class="improve-radio-circle" aria-hidden="true"></span>
+            <span class="improve-radio-label">Missing required skills</span>
+          </label>
+          <label class="improve-radio">
+            <input type="radio" name="improve-reason" value="visa" />
+            <span class="improve-radio-circle" aria-hidden="true"></span>
+            <span class="improve-radio-label">Visa or work authorisation issue</span>
+          </label>
+          <label class="improve-radio">
+            <input type="radio" name="improve-reason" value="wrong-title" />
+            <span class="improve-radio-circle" aria-hidden="true"></span>
+            <span class="improve-radio-label">Wrong job title for this role</span>
+          </label>
+          <label class="improve-radio">
+            <input type="radio" name="improve-reason" value="experience" />
+            <span class="improve-radio-circle" aria-hidden="true"></span>
+            <span class="improve-radio-label">Not enough experience</span>
+          </label>
+          <label class="improve-radio">
+            <input type="radio" name="improve-reason" value="other" />
+            <span class="improve-radio-circle" aria-hidden="true"></span>
+            <span class="improve-radio-label">Other (please specify)</span>
+          </label>
+        </div>
+      </div>
+      <div class="improve-footer">
+        <button class="improve-submit" id="improve-submit" type="button">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Candidate Profile Modal ──────────────────────────────── -->
+  <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <button class="modal-close-btn" id="modal-close" type="button" aria-label="Close">
+          <svg viewBox="0 0 13.150 13.150" fill="none" aria-hidden="true"><path fill="currentColor" fill-rule="nonzero" d="M 6.575 7.975 L 1.675 12.875 C 1.492 13.058 1.258 13.15 0.975 13.15 C 0.692 13.15 0.458 13.058 0.275 12.875 C 0.092 12.692 0 12.458 0 12.175 C 0 11.892 0.092 11.658 0.275 11.475 L 5.175 6.575 L 0.275 1.675 C 0.092 1.492 0 1.258 0 0.975 C 0 0.692 0.092 0.458 0.275 0.275 C 0.458 0.092 0.692 0 0.975 0 C 1.258 0 1.492 0.092 1.675 0.275 L 6.575 5.175 L 11.475 0.275 C 11.658 0.092 11.892 0 12.175 0 C 12.458 0 12.692 0.092 12.875 0.275 C 13.058 0.458 13.15 0.692 13.15 0.975 C 13.15 1.258 13.058 1.492 12.875 1.675 L 7.975 6.575 L 12.875 11.475 C 13.058 11.658 13.15 11.892 13.15 12.175 C 13.15 12.458 13.058 12.692 12.875 12.875 C 12.692 13.058 12.458 13.15 12.175 13.15 C 11.892 13.15 11.658 13.058 11.475 12.875 L 6.575 7.975 Z"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Left -->
+        <div class="modal-left">
+          <div>
+            <div class="modal-candidate-name" id="modal-name">Candidate</div>
+            <div class="modal-candidate-meta">Last active 2 hours ago</div>
+            <div class="modal-candidate-meta">Registered 12/01/26</div>
+          </div>
+          <div class="modal-divider"></div>
+
+          <div class="modal-pre-invite" id="modal-pre-invite">
+            <div class="modal-alert">
+              <div class="modal-alert-icon">
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path fill="currentColor" fill-rule="nonzero" d="M 10 15 C 10.283 15 10.521 14.904 10.713 14.713 C 10.904 14.521 11 14.283 11 14 L 11 10 C 11 9.717 10.904 9.479 10.713 9.288 C 10.521 9.096 10.283 9 10 9 C 9.717 9 9.479 9.096 9.288 9.288 C 9.096 9.479 9 9.717 9 10 L 9 14 C 9 14.283 9.096 14.521 9.288 14.713 C 9.479 14.904 9.717 15 10 15 Z M 10 7 C 10.283 7 10.521 6.904 10.713 6.713 C 10.904 6.521 11 6.283 11 6 C 11 5.717 10.904 5.479 10.713 5.287 C 10.521 5.096 10.283 5 10 5 C 9.717 5 9.479 5.096 9.288 5.287 C 9.096 5.479 9 5.717 9 6 C 9 6.283 9.096 6.521 9.288 6.713 C 9.479 6.904 9.717 7 10 7 Z M 10 20 C 8.617 20 7.317 19.737 6.1 19.212 C 4.883 18.688 3.825 17.975 2.925 17.075 C 2.025 16.175 1.313 15.117 0.788 13.9 C 0.262 12.683 0 11.383 0 10 C 0 8.617 0.262 7.317 0.788 6.1 C 1.313 4.883 2.025 3.825 2.925 2.925 C 3.825 2.025 4.883 1.313 6.1 0.788 C 7.317 0.262 8.617 0 10 0 C 11.383 0 12.683 0.262 13.9 0.788 C 15.117 1.313 16.175 2.025 17.075 2.925 C 17.975 3.825 18.688 4.883 19.212 6.1 C 19.737 7.317 20 8.617 20 10 C 20 11.383 19.737 12.683 19.212 13.9 C 18.688 15.117 17.975 16.175 17.075 17.075 C 16.175 17.975 15.117 18.688 13.9 19.212 C 12.683 19.737 11.383 20 10 20 Z"/></svg>
+              </div>
+              <div class="modal-alert-text">Invite to Apply lets you reach out to matched candidates and invite them to apply for your jobs.</div>
+              <button class="modal-alert-dismiss" type="button" aria-label="Dismiss">
+                <svg viewBox="0 0 13.150 13.150" fill="none" aria-hidden="true"><path fill="currentColor" fill-rule="nonzero" d="M 6.575 7.975 L 1.675 12.875 C 1.492 13.058 1.258 13.15 0.975 13.15 C 0.692 13.15 0.458 13.058 0.275 12.875 C 0.092 12.692 0 12.458 0 12.175 C 0 11.892 0.092 11.658 0.275 11.475 L 5.175 6.575 L 0.275 1.675 C 0.092 1.492 0 1.258 0 0.975 C 0 0.692 0.092 0.458 0.275 0.275 C 0.458 0.092 0.692 0 0.975 0 C 1.258 0 1.492 0.092 1.675 0.275 L 6.575 5.175 L 11.475 0.275 C 11.658 0.092 11.892 0 12.175 0 C 12.458 0 12.692 0.092 12.875 0.275 C 13.058 0.458 13.15 0.692 13.15 0.975 C 13.15 1.258 13.058 1.492 12.875 1.675 L 7.975 6.575 L 12.875 11.475 C 13.058 11.658 13.15 11.892 13.15 12.175 C 13.15 12.458 13.058 12.692 12.875 12.875 C 12.692 13.058 12.458 13.15 12.175 13.15 C 11.892 13.15 11.658 13.058 11.475 12.875 L 6.575 7.975 Z"/></svg>
+              </button>
+            </div>
+            <div class="modal-invites">Invites remaining: <span id="modal-invites-remaining">15</span></div>
+            <div class="modal-actions">
+              <button class="btn-send-invite" type="button">Send Invite</button>
+              <button class="btn-not-suitable" type="button">Not suitable</button>
+              <button class="btn-preview-invite" type="button">Preview invitation</button>
+            </div>
+          </div>
+
+          <div class="modal-post-invite" id="modal-post-invite" style="display:none">
+            <div class="modal-invited-status">
+              <div class="card-invited-check">
+                <svg viewBox="0 0 15.463 11.225" fill="none" aria-hidden="true"><path fill="currentColor" fill-rule="nonzero" d="M 5.288 8.775 L 13.763 0.3 C 13.963 0.1 14.196 0 14.463 0 C 14.73 0 14.963 0.1 15.163 0.3 C 15.363 0.5 15.463 0.738 15.463 1.013 C 15.463 1.288 15.363 1.525 15.163 1.725 L 5.988 10.925 C 5.788 11.125 5.555 11.225 5.288 11.225 C 5.021 11.225 4.788 11.125 4.588 10.925 L 0.288 6.625 C 0.088 6.425 -0.008 6.188 0 5.912 C 0.009 5.637 0.113 5.4 0.313 5.2 C 0.513 5 0.751 4.9 1.026 4.9 C 1.301 4.9 1.538 5 1.738 5.2 L 5.288 8.775 Z"/></svg>
+              </div>
+              <span class="card-invited-label" id="modal-invited-date">Invite sent on 23/09/26</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="modal-right">
+          <div class="modal-tabs" role="tablist">
+            <button class="modal-tab active" type="button" data-pane="cv" role="tab">CV</button>
+            <button class="modal-tab" type="button" data-pane="profile" role="tab">Profile</button>
+          </div>
+
+          <!-- CV pane -->
+          <div id="cv-pane">
+            <div class="modal-pdf-viewer">
+              <div class="modal-pdf-header"><span id="cv-filename">candidate_cv.pdf</span></div>
+              <div class="modal-pdf-body">
+                <div class="cv-doc">
+                  <div class="cv-name" id="cv-full-name"><span class="cv-redacted">████████████</span></div>
+                  <div class="cv-role" id="cv-role">Staff Nurse · WCA Assessor</div>
+                  <div class="cv-contact">
+                    <span id="cv-email"><span class="cv-redacted">██████████████████</span></span>
+                    <span id="cv-phone"><span class="cv-redacted">█████████████</span></span>
+                    <span id="cv-location">Camden, London</span>
+                    <span>Eligible to work in UK</span>
+                  </div>
+
+                  <div class="cv-section">
+                    <div class="cv-section-title">Profile</div>
+                    <div class="cv-entry-body">Dedicated registered nurse with 8 years of clinical experience across NHS and private healthcare settings. Specialising in functional assessments, PIP and WCA evaluations, and patient-centred care planning. Seeking a Nurse Assessor role to apply assessment expertise in a structured environment.</div>
+                  </div>
+
+                  <div class="cv-section">
+                    <div class="cv-section-title">Experience</div>
+                    <div class="cv-entry">
+                      <div class="cv-entry-header">
+                        <span class="cv-entry-title">Staff Nurse – Assessment Unit</span>
+                        <span class="cv-entry-date">Mar 2020 – Present</span>
+                      </div>
+                      <div class="cv-entry-sub">Royal Free Hospital, London</div>
+                      <div class="cv-entry-body">Conducted clinical assessments for inpatients and outpatients. Collaborated with multidisciplinary teams to develop care plans. Completed over 400 WCA and PIP assessments annually.</div>
+                    </div>
+                    <div class="cv-entry">
+                      <div class="cv-entry-header">
+                        <span class="cv-entry-title">Registered Nurse</span>
+                        <span class="cv-entry-date">Jun 2016 – Feb 2020</span>
+                      </div>
+                      <div class="cv-entry-sub">UCLH NHS Foundation Trust, London</div>
+                      <div class="cv-entry-body">Delivered direct patient care across medical and surgical wards. Supported junior nurses and contributed to ward audits and quality improvement initiatives.</div>
+                    </div>
+                  </div>
+
+                  <div class="cv-section">
+                    <div class="cv-section-title">Education</div>
+                    <div class="cv-entry">
+                      <div class="cv-entry-header">
+                        <span class="cv-entry-title">BSc (Hons) Nursing</span>
+                        <span class="cv-entry-date">2013 – 2016</span>
+                      </div>
+                      <div class="cv-entry-sub">King's College London</div>
+                    </div>
+                    <div class="cv-entry">
+                      <div class="cv-entry-header">
+                        <span class="cv-entry-title">NMC Registered Nurse (Adult)</span>
+                        <span class="cv-entry-date">2016 – Present</span>
+                      </div>
+                      <div class="cv-entry-sub">Nursing and Midwifery Council</div>
+                    </div>
+                  </div>
+
+                  <div class="cv-section">
+                    <div class="cv-section-title">Skills</div>
+                    <div class="cv-skills-list">
+                      <span class="cv-skill-chip">Clinical Assessment</span>
+                      <span class="cv-skill-chip">WCA</span>
+                      <span class="cv-skill-chip">PIP Assessments</span>
+                      <span class="cv-skill-chip">Care Planning</span>
+                      <span class="cv-skill-chip">Patient Communication</span>
+                      <span class="cv-skill-chip">Report Writing</span>
+                      <span class="cv-skill-chip">MDT Collaboration</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile pane -->
+          <div id="profile-pane">
+            <div class="profile-section">
+              <div class="profile-section-title">Looking for</div>
+              <div class="profile-section-content">
+                <div class="profile-field">
+                  <div class="profile-field-label">Job type</div>
+                  <div class="profile-field-value">Permanent, Contract, Full-time</div>
+                </div>
+                <div class="profile-field">
+                  <div class="profile-field-label">Sectors &amp; Roles</div>
+                  <div class="profile-field-value">Healthcare · Nurse Assessor</div>
+                </div>
+              </div>
+            </div>
+            <div class="profile-section">
+              <div class="profile-section-title">Status &amp; Availability</div>
+              <div class="profile-section-content">
+                <div class="profile-field">
+                  <div class="profile-field-label">Employment status</div>
+                  <div class="profile-field-value">Employed (full-time)</div>
+                </div>
+                <div class="profile-field">
+                  <div class="profile-field-label">Notice period</div>
+                  <div class="profile-field-value">1 month</div>
+                </div>
+                <div class="profile-field">
+                  <div class="profile-field-label">Eligible to work in the UK</div>
+                  <div class="profile-field-value">Yes</div>
+                </div>
+              </div>
+            </div>
+            <div class="profile-section">
+              <div class="profile-section-title">Car &amp; Driving licence</div>
+              <div class="profile-section-content">
+                <div class="profile-field">
+                  <div class="profile-field-label">I have a full licence and am eligible to drive in the UK</div>
+                  <div class="profile-field-value">Yes</div>
+                </div>
+                <div class="profile-field">
+                  <div class="profile-field-label">I have a car</div>
+                  <div class="profile-field-value">Yes</div>
+                </div>
+              </div>
+            </div>
+            <div class="profile-section">
+              <div class="profile-section-title">Work experience</div>
+              <div class="profile-section-content">
+                <div class="profile-experience-entry">
+                  <div class="profile-field-label">Staff Nurse – Assessment Unit</div>
+                  <div class="profile-field-value-muted">Royal Free Hospital</div>
+                  <div class="profile-field-value-muted">2020 – Present</div>
+                </div>
+                <div class="profile-experience-entry">
+                  <div class="profile-field-label">Registered Nurse</div>
+                  <div class="profile-field-value-muted">UCLH NHS Foundation Trust</div>
+                  <div class="profile-field-value-muted">2016 – 2020</div>
+                </div>
+              </div>
+            </div>
+            <div class="profile-section">
+              <div class="profile-section-title">Qualifications</div>
+              <div class="profile-section-content">
+                <div class="profile-qual-entry">
+                  <div class="profile-field-label">King's College London</div>
+                  <div class="profile-field-value-muted">BSc (Hons) Nursing (Grade: 2:1)</div>
+                  <div class="profile-field-value-muted">Degree</div>
+                  <div class="profile-field-value-muted">2013 – 2016</div>
+                </div>
+                <div class="profile-qual-entry">
+                  <div class="profile-field-label">Nursing and Midwifery Council</div>
+                  <div class="profile-field-value-muted">NMC Registered Nurse (Adult)</div>
+                  <div class="profile-field-value-muted">Professional registration</div>
+                  <div class="profile-field-value-muted">2016 – Present</div>
+                </div>
+              </div>
+            </div>
+            <div class="profile-section">
+              <div class="profile-section-title">Skills</div>
+              <div class="profile-section-content">
+                <div class="profile-chip-list">
+                  <span class="profile-chip">Clinical Assessment</span>
+                  <span class="profile-chip">WCA</span>
+                  <span class="profile-chip">PIP Assessments</span>
+                  <span class="profile-chip">Care Planning</span>
+                  <span class="profile-chip">Patient Communication</span>
+                  <span class="profile-chip">Report Writing</span>
+                  <span class="profile-chip">MDT Collaboration</span>
+                  <span class="profile-chip">Triage</span>
+                </div>
+              </div>
+            </div>
+            <div class="profile-section">
+              <div class="profile-section-title">Languages</div>
+              <div class="profile-section-content">
+                <div class="profile-chip-list">
+                  <span class="profile-chip profile-chip-lang">English<span class="fluency">Native</span></span>
+                  <span class="profile-chip profile-chip-lang">Spanish<span class="fluency">Conversational</span></span>
+                  <span class="profile-chip profile-chip-lang">French<span class="fluency">Basic</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="profile-section">
+              <div class="profile-section-title">Personal statement</div>
+              <div class="profile-section-content">
+                <div class="profile-statement">Dedicated registered nurse with 8 years of clinical experience across NHS and private healthcare settings. Specialising in functional assessments, PIP and WCA evaluations, and patient-centred care planning. Seeking a Nurse Assessor role to apply assessment expertise in a structured environment.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── State ─────────────────────────────────────────────────────
+    let activeCard = null;
+    let toastTimer = null;
+    let currentView = 'matches';
+
+    // ── Persisted candidate state (shared across pages via localStorage) ─
+    const PERSIST_KEY = 'jt-candidate-state-v1';
+    const INVITE_BUDGET = 15;
+    function loadPersist() {
+      try { return JSON.parse(localStorage.getItem(PERSIST_KEY)) || { invited: [], unsuitable: [] }; }
+      catch (e) { return { invited: [], unsuitable: [] }; }
+    }
+    function savePersist(s) {
+      try { localStorage.setItem(PERSIST_KEY, JSON.stringify(s)); } catch (e) {}
+    }
+    function persistAction(action, name) {
+      if (!name) return;
+      const s = loadPersist();
+      if (action === 'invited') {
+        if (!s.invited.includes(name)) s.invited.push(name);
+        s.unsuitable = s.unsuitable.filter(n => n !== name);
+      } else if (action === 'unsuitable') {
+        if (!s.unsuitable.includes(name)) s.unsuitable.push(name);
+        s.invited = s.invited.filter(n => n !== name);
+      }
+      savePersist(s);
+    }
+    function findCardByName(name) {
+      return [...document.querySelectorAll('.candidate-card')].find(card => {
+        const n = card.querySelector('.card-name');
+        return n && n.textContent.trim() === name.trim();
+      });
+    }
+    function silentlyMarkInvited(card) {
+      if (!card) return;
+      card.dataset.view = 'invited';
+      const iconBtn = card.querySelector('.btn-icon');
+      if (iconBtn) iconBtn.remove();
+      if (!card.querySelector('.card-invited-footer')) {
+        const footer = document.createElement('div');
+        footer.className = 'card-invited-footer';
+        footer.innerHTML = '<div class="card-invited-divider"></div><div class="card-invited-status"><div class="card-invited-check"><svg viewBox="0 0 15.463 11.225" fill="none" aria-hidden="true"><path fill="currentColor" fill-rule="nonzero" d="M 5.288 8.775 L 13.763 0.3 C 13.963 0.1 14.196 0 14.463 0 C 14.73 0 14.963 0.1 15.163 0.3 C 15.363 0.5 15.463 0.738 15.463 1.013 C 15.463 1.288 15.363 1.525 15.163 1.725 L 5.988 10.925 C 5.788 11.125 5.555 11.225 5.288 11.225 C 5.021 11.225 4.788 11.125 4.588 10.925 L 0.288 6.625 C 0.088 6.425 -0.008 6.188 0 5.912 C 0.009 5.637 0.113 5.4 0.313 5.2 C 0.513 5 0.751 4.9 1.026 4.9 C 1.301 4.9 1.538 5 1.738 5.2 L 5.288 8.775 Z"/></svg></div><span class="card-invited-label">Invite sent</span></div>';
+        card.appendChild(footer);
+      }
+      delete card.dataset.removed;
+    }
+    function silentlyRemove(card) {
+      if (!card) return;
+      card.style.display = 'none';
+      card.dataset.removed = 'true';
+    }
+    function applyPersistedState() {
+      const s = loadPersist();
+      s.invited.forEach(name => silentlyMarkInvited(findCardByName(name)));
+      s.unsuitable.forEach(name => silentlyRemove(findCardByName(name)));
+      const remEl = document.getElementById('invites-remaining');
+      if (remEl) remEl.textContent = Math.max(0, INVITE_BUDGET - s.invited.length);
+    }
+
+    const REDACT = '████████████';
+    const REDACT_LONG = '██████████████████';
+    const REDACT_PHONE = '█████████████';
+
+    // Per-candidate CV/contact data, revealed only for invited candidates
+    const cvData = {
+      'Sophia':  { full: 'Sophia Clarke',     role: 'Staff Nurse · WCA Assessor',           email: 'sophia.clarke@email.com',     phone: '07700 900 412', file: 'Sophia_Clarke_CV.pdf' },
+      'James':   { full: 'James Okafor',      role: 'Mental Health Nurse · Nurse Assessor', email: 'james.okafor@email.com',      phone: '07700 900 218', file: 'James_Okafor_CV.pdf' },
+      'Amara':   { full: 'Amara Mensah',      role: 'Physiotherapist · WCA Assessor',       email: 'amara.mensah@email.com',      phone: '07700 900 365', file: 'Amara_Mensah_CV.pdf' },
+      'Daniel':  { full: 'Daniel Hughes',     role: 'Occupational Therapist · Assessor',    email: 'daniel.hughes@email.com',     phone: '07700 900 472', file: 'Daniel_Hughes_CV.pdf' },
+      'Priya':   { full: 'Priya Patel',       role: 'Registered Nurse · Nurse Assessor',    email: 'priya.patel@email.com',       phone: '07700 900 184', file: 'Priya_Patel_CV.pdf' },
+      'Tom':     { full: 'Tom Whitfield',     role: 'Paramedic · WCA Assessor',             email: 'tom.whitfield@email.com',     phone: '07700 900 593', file: 'Tom_Whitfield_CV.pdf' },
+      'Fatima':  { full: 'Fatima Hassan',     role: 'Community Nurse · Nurse Assessor',     email: 'fatima.hassan@email.com',     phone: '07700 900 327', file: 'Fatima_Hassan_CV.pdf' },
+      'Marcus':  { full: 'Marcus Reid',       role: 'GP Practice Nurse · WCA Assessor',     email: 'marcus.reid@email.com',       phone: '07700 900 641', file: 'Marcus_Reid_CV.pdf' },
+    };
+
+    // ── Element refs ──────────────────────────────────────────────
+    const filterBtn      = document.getElementById('filter-btn');
+    const filterDropdown = document.getElementById('filter-dropdown');
+    const filterLabel    = document.getElementById('filter-label');
+    const resultsInfo    = document.getElementById('results-info');
+    const toast          = document.getElementById('toast-alert');
+    const toastBody      = document.getElementById('toast-body');
+    const overlay        = document.getElementById('modal-overlay');
+    const modalName      = document.getElementById('modal-name');
+    const improveOverlay = document.getElementById('improve-overlay');
+    const improveNameEl  = document.getElementById('improve-name');
+
+    // ── Filter dropdown ───────────────────────────────────────────
+    filterBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      filterDropdown.classList.toggle('open');
+    });
+    document.addEventListener('click', () => filterDropdown.classList.remove('open'));
+    filterDropdown.addEventListener('click', (e) => e.stopPropagation());
+
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const value = item.dataset.value;
+        if (value === currentView) {
+          filterDropdown.classList.remove('open');
+          return;
+        }
+        currentView = value;
+        filterLabel.textContent = value === 'matches' ? 'Matches' : 'Invited';
+        document.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('selected'));
+        item.classList.add('selected');
+        filterDropdown.classList.remove('open');
+        applyFilter();
+      });
+    });
+
+    function applyFilter() {
+      document.querySelectorAll('.candidate-card').forEach(card => {
+        if (card.dataset.removed === 'true') return;
+        card.style.display = card.dataset.view === currentView ? '' : 'none';
+      });
+      updateResultsInfo();
+    }
+
+    // ── Counts & results info ─────────────────────────────────────
+    function updateResultsInfo() {
+      const visible = [...document.querySelectorAll('.candidate-card')]
+        .filter(c => c.dataset.view === currentView && c.dataset.removed !== 'true').length;
+      const label = currentView === 'matches' ? 'matches' : 'invited';
+      resultsInfo.textContent = visible > 0
+        ? `1 – ${visible} of ${visible} ${label}`
+        : `0 ${label}`;
+    }
+
+    function updateCount() {
+      const matchCount = [...document.querySelectorAll('.candidate-card[data-view="matches"]')]
+        .filter(c => c.dataset.removed !== 'true').length;
+      document.getElementById('matches-count').textContent = matchCount;
+
+      const invitedCount = [...document.querySelectorAll('.candidate-card[data-view="invited"]')]
+        .filter(c => c.dataset.removed !== 'true').length;
+      document.getElementById('invited-count').textContent = invitedCount;
+    }
+
+    function removeCard(card) {
+      if (!card) return;
+      card.classList.add('removing');
+      card.addEventListener('transitionend', () => {
+        card.style.display = 'none';
+        card.dataset.removed = 'true';
+        updateCount();
+        updateResultsInfo();
+      }, { once: true });
+    }
+
+    // ── Toast ─────────────────────────────────────────────────────
+    function showToast(message = 'Invite sent.') {
+      if (toastTimer) clearTimeout(toastTimer);
+      toastBody.textContent = message;
+      toast.classList.remove('hiding');
+      toast.classList.add('visible');
+      toastTimer = setTimeout(hideToast, 4000);
+    }
+    function hideToast() {
+      toast.classList.add('hiding');
+      toast.addEventListener('transitionend', () => {
+        toast.classList.remove('visible', 'hiding');
+      }, { once: true });
+    }
+    document.getElementById('toast-close').addEventListener('click', hideToast);
+
+    // ── Improve modal ─────────────────────────────────────────────
+    function openImproveModal(name) {
+      improveNameEl.textContent = name || 'this candidate';
+      improveOverlay.querySelectorAll('input[name="improve-reason"]').forEach(r => r.checked = false);
+      improveOverlay.classList.add('open');
+    }
+    function closeImproveModal() { improveOverlay.classList.remove('open'); }
+
+    document.getElementById('improve-close').addEventListener('click', closeImproveModal);
+    document.getElementById('improve-submit').addEventListener('click', closeImproveModal);
+    improveOverlay.addEventListener('click', (e) => {
+      if (e.target === improveOverlay) closeImproveModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && improveOverlay.classList.contains('open')) closeImproveModal();
+    });
+
+    // ── Dismiss card via X icon: remove + toast + open improve modal
+    document.querySelectorAll('.btn-icon').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.candidate-card');
+        const name = card ? card.querySelector('.card-name')?.textContent?.trim() : '';
+        persistAction('unsuitable', name);
+        removeCard(card);
+        showToast('Marked as unsuitable.');
+        openImproveModal(name);
+      });
+    });
+
+    // ── Profile modal: View click ─────────────────────────────────
+    function syncModalInvites() {
+      const rem = document.getElementById('invites-remaining').textContent;
+      document.getElementById('modal-invites-remaining').textContent = rem;
+    }
+
+    document.querySelectorAll('.btn-view').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.candidate-card');
+        activeCard = card;
+        const name = card.querySelector('.card-name').textContent;
+        modalName.textContent = name;
+        syncModalInvites();
+
+        const data = cvData[name];
+        const isInvited = card.dataset.view === 'invited';
+        const cvName = document.getElementById('cv-full-name');
+        const cvEmail = document.getElementById('cv-email');
+        const cvPhone = document.getElementById('cv-phone');
+        const cvRole = document.getElementById('cv-role');
+        const cvFilename = document.getElementById('cv-filename');
+
+        if (data) cvRole.textContent = data.role;
+
+        const preInvite = document.getElementById('modal-pre-invite');
+        const postInvite = document.getElementById('modal-post-invite');
+
+        if (isInvited) {
+          preInvite.style.display = 'none';
+          postInvite.style.display = 'flex';
+          const footerLabel = card.querySelector('.card-invited-label');
+          if (footerLabel) {
+            document.getElementById('modal-invited-date').textContent = footerLabel.textContent;
+          }
+        } else {
+          preInvite.style.display = 'flex';
+          postInvite.style.display = 'none';
+        }
+
+        if (isInvited && data) {
+          // Reveal — invited candidates have shared their info
+          cvName.textContent = data.full;
+          cvEmail.textContent = data.email;
+          cvPhone.textContent = data.phone;
+          cvFilename.textContent = data.file;
+        } else {
+          // Redact for non-invited
+          cvName.innerHTML = `<span class="cv-redacted">${REDACT}</span>`;
+          cvEmail.innerHTML = `<span class="cv-redacted">${REDACT_LONG}</span>`;
+          cvPhone.innerHTML = `<span class="cv-redacted">${REDACT_PHONE}</span>`;
+          cvFilename.textContent = 'candidate_cv.pdf';
+        }
+
+        // Reset to CV tab
+        document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+        document.querySelector('.modal-tab').classList.add('active');
+        document.getElementById('cv-pane').style.display = '';
+        document.getElementById('profile-pane').classList.remove('active');
+
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    // ── Close profile modal ───────────────────────────────────────
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal();
+    });
+    function closeModal() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+    });
+
+    // ── Send Invite: close modal, toast, move card to Invited ─────
+    function todayFormatted() {
+      const d = new Date();
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const yy = String(d.getFullYear()).slice(2);
+      return `${dd}/${mm}/${yy}`;
+    }
+
+    document.querySelector('.btn-send-invite').addEventListener('click', () => {
+      const card = activeCard;
+      const invitedName = card ? card.querySelector('.card-name')?.textContent?.trim() : '';
+      persistAction('invited', invitedName);
+      // Notify a chromeless-mode host (e.g. Job Live carousel) so it can
+      // remove the corresponding card from its own list.
+      if (document.documentElement.classList.contains('chromeless') && invitedName) {
+        parent.postMessage({ type: 'candidateInvited', name: invitedName }, '*');
+      }
+      closeModal();
+      showToast();
+
+      setTimeout(() => {
+        if (!card) return;
+
+        // Move card from matches → invited
+        card.dataset.view = 'invited';
+
+        // Remove dismiss icon button
+        const iconBtn = card.querySelector('.btn-icon');
+        if (iconBtn) iconBtn.remove();
+
+        // Add invited footer if not already present
+        if (!card.querySelector('.card-invited-footer')) {
+          const footer = document.createElement('div');
+          footer.className = 'card-invited-footer';
+          footer.innerHTML = `
+            <div class="card-invited-divider"></div>
+            <div class="card-invited-status">
+              <div class="card-invited-check">
+                <svg viewBox="0 0 15.463 11.225" fill="none" aria-hidden="true"><path fill="currentColor" fill-rule="nonzero" d="M 5.288 8.775 L 13.763 0.3 C 13.963 0.1 14.196 0 14.463 0 C 14.73 0 14.963 0.1 15.163 0.3 C 15.363 0.5 15.463 0.738 15.463 1.013 C 15.463 1.288 15.363 1.525 15.163 1.725 L 5.988 10.925 C 5.788 11.125 5.555 11.225 5.288 11.225 C 5.021 11.225 4.788 11.125 4.588 10.925 L 0.288 6.625 C 0.088 6.425 -0.008 6.188 0 5.912 C 0.009 5.637 0.113 5.4 0.313 5.2 C 0.513 5 0.751 4.9 1.026 4.9 C 1.301 4.9 1.538 5 1.738 5.2 L 5.288 8.775 Z"/></svg>
+              </div>
+              <span class="card-invited-label">Invite sent on ${todayFormatted()}</span>
+            </div>`;
+          card.appendChild(footer);
+        }
+
+        // Hide it (it's now an invited card, currently in matches view)
+        card.style.display = 'none';
+        delete card.dataset.removed;
+
+        // Decrement invites remaining
+        const remEl = document.getElementById('invites-remaining');
+        const rem = parseInt(remEl.textContent, 10);
+        if (rem > 0) remEl.textContent = rem - 1;
+
+        updateCount();
+        updateResultsInfo();
+        syncModalInvites();
+      }, 320);
+
+      activeCard = null;
+    });
+
+    // ── Modal "Not suitable": close modal then trigger the same
+    //    flow as the card's Not suitable button (toast + improve modal)
+    document.querySelector('.btn-not-suitable').addEventListener('click', () => {
+      const card = activeCard;
+      const name = card ? card.querySelector('.card-name')?.textContent?.trim() : '';
+      persistAction('unsuitable', name);
+      if (document.documentElement.classList.contains('chromeless') && name) {
+        parent.postMessage({ type: 'candidateUnsuitable', name }, '*');
+      }
+      closeModal();
+      // Wait for modal close animation so the toast doesn't collide
+      setTimeout(() => {
+        removeCard(card);
+        showToast('Marked as unsuitable.');
+        openImproveModal(name);
+      }, 320);
+      activeCard = null;
+    });
+
+    // ── Modal alert dismiss (info banner) ─────────────────────────
+    document.querySelector('.modal-alert-dismiss').addEventListener('click', () => {
+      const alert = document.querySelector('.modal-alert');
+      if (alert) alert.style.display = 'none';
+    });
+
+    // ── Tabs (CV / Profile) ───────────────────────────────────────
+    document.querySelectorAll('.modal-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const pane = tab.dataset.pane;
+        const cvPane = document.getElementById('cv-pane');
+        const profilePane = document.getElementById('profile-pane');
+        if (pane === 'profile') {
+          cvPane.style.display = 'none';
+          profilePane.classList.add('active');
+        } else {
+          cvPane.style.display = '';
+          profilePane.classList.remove('active');
+        }
+      });
+    });
+
+    // ── Init ──────────────────────────────────────────────────────
+    applyPersistedState();
+    applyFilter();
+    updateResultsInfo();
+    updateCount();
+
+    // ── Deeplink: ?candidate=<name> auto-opens the matching modal ─
+    (function handleDeeplink() {
+      const params = new URLSearchParams(window.location.search);
+      const candidate = params.get('candidate');
+      const chromeless = params.get('chromeless') === '1';
+      if (chromeless) document.documentElement.classList.add('chromeless');
+      if (!candidate) return;
+      const target = [...document.querySelectorAll('.candidate-card')].find(card => {
+        const nameEl = card.querySelector('.card-name');
+        return nameEl && nameEl.textContent.trim() === candidate.trim();
+      });
+      if (!target) return;
+      const viewBtn = target.querySelector('.btn-view');
+      if (!viewBtn) return;
+
+      // ?action=unsuitable: dismiss card + toast + improve modal, no profile view
+      if (params.get('action') === 'unsuitable') {
+        setTimeout(() => {
+          persistAction('unsuitable', candidate.trim());
+          removeCard(target);
+          showToast('Marked as unsuitable.');
+          openImproveModal(candidate.trim());
+        }, 50);
+      } else {
+        setTimeout(() => viewBtn.click(), chromeless ? 50 : 500);
+      }
+
+      // In chromeless (iframe-embed) mode, once everything closes, tell
+      // the host page so it can dismiss the iframe overlay. Wait for a
+      // quiet period to allow chained transitions (e.g. "Not suitable"
+      // closes the profile modal then opens the Improve modal 320ms later).
+      if (chromeless) {
+        let everOpened = false;
+        let lastOpenAt = 0;
+        const QUIET_MS = 600;
+        const overlayEl = document.getElementById('modal-overlay');
+        const improveEl = document.getElementById('improve-overlay');
+        const toastEl   = document.getElementById('toast-alert');
+        setInterval(() => {
+          const open = overlayEl.classList.contains('open')
+            || improveEl.classList.contains('open')
+            || toastEl.classList.contains('visible');
+          if (open) {
+            everOpened = true;
+            lastOpenAt = Date.now();
+          } else if (everOpened && Date.now() - lastOpenAt >= QUIET_MS) {
+            everOpened = false;
+            parent.postMessage({ type: 'closeCandidateModal' }, '*');
+          }
+        }, 150);
+      }
+    })();
+  </script>
+
+</body>
+</html>
