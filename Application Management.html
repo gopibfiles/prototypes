@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application Management – WCA Nurse Assessor</title>
+  <title>Application Management – WCA Care Worker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@400;600;700&family=Roboto:wght@800&display=swap" rel="stylesheet" />
@@ -598,7 +598,7 @@
     }
     .modal-pdf-header span { font-size: 16px; line-height: 20px; color: #fff; }
     .modal-pdf-body {
-      background: var(--c-pdf-body);
+      background: #fff;
       height: 700px;
       overflow-y: auto;
       display: flex;
@@ -612,7 +612,6 @@
       max-width: 680px;
       background: #fff;
       padding: 48px 56px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
       font-family: "Red Hat Text", sans-serif;
       color: var(--c-text);
     }
@@ -677,7 +676,6 @@
       z-index: 250;
       display: flex; align-items: center; justify-content: center;
       opacity: 0; pointer-events: none;
-      transition: opacity 0.25s ease;
     }
     .improve-overlay.open { opacity: 1; pointer-events: all; }
     .improve-panel {
@@ -688,11 +686,8 @@
       box-shadow: 0 2px 10px 0 rgba(15,21,26,0.03), 0 16px 48px rgba(15,21,26,0.18);
       display: flex; flex-direction: column;
       overflow: hidden;
-      transform: translateY(16px) scale(0.98);
-      transition: transform 0.25s ease;
       font-family: "Red Hat Text", sans-serif;
     }
-    .improve-overlay.open .improve-panel { transform: translateY(0) scale(1); }
     .improve-header {
       display: flex; align-items: flex-start; gap: 8px;
       padding: 16px 16px 0 24px;
@@ -935,7 +930,7 @@
                 <path fill="currentColor" fill-rule="nonzero" d="M 6.875 14.888 L 0.275 8.288 C 0.175 8.188 0.104 8.08 0.063 7.963 C 0.021 7.846 0 7.721 0 7.588 C 0 7.455 0.021 7.33 0.063 7.213 C 0.104 7.096 0.175 6.988 0.275 6.888 L 6.875 0.288 C 7.058 0.105 7.287 0.009 7.563 0 C 7.838 -0.008 8.075 0.088 8.275 0.288 C 8.475 0.471 8.579 0.701 8.588 0.976 C 8.596 1.251 8.5 1.488 8.3 1.688 L 3.4 6.588 L 14.575 6.588 C 14.858 6.588 15.096 6.684 15.288 6.875 C 15.479 7.067 15.575 7.305 15.575 7.588 C 15.575 7.871 15.479 8.109 15.288 8.3 C 15.096 8.492 14.858 8.588 14.575 8.588 L 3.4 8.588 L 8.3 13.488 C 8.483 13.671 8.579 13.905 8.588 14.188 C 8.596 14.471 8.5 14.705 8.3 14.888 C 8.117 15.088 7.883 15.188 7.6 15.188 C 7.317 15.188 7.075 15.088 6.875 14.888 Z"/>
               </svg>
             </button>
-            <h1 class="job-title">WCA Nurse Assessor</h1>
+            <h1 class="job-title" id="page-job-title">WCA Care Worker</h1>
           </div>
           <div class="job-details">
             <span class="tag-active">Active</span>
@@ -1014,15 +1009,15 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Staff Nurse</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Nurse Assessor</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Care Worker</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Care Worker</div></div>
           <div><div class="card-field-label">Location</div><div class="card-field-value">Camden, London</div></div>
           <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
-          <span class="chip">Clinical Assessment</span>
-          <span class="chip">WCA</span>
+          <span class="chip">Personal Care</span>
+          <span class="chip">Medication Admin</span>
         </div>
       </div>
       <div class="candidate-card" data-view="matches">
@@ -1038,16 +1033,16 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Mental Health Nurse</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Nurse Assessor</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Senior Care Assistant</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Care Worker</div></div>
           <div><div class="card-field-label">Location</div><div class="card-field-value">Islington, London</div></div>
           <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
-          <span class="chip">Patient Care</span>
-          <span class="chip">Assessment</span>
-          <span class="chip">PIP</span>
+          <span class="chip">Personal Care</span>
+          <span class="chip">Care Planning</span>
+          <span class="chip">Manual Handling</span>
         </div>
       </div>
       <div class="candidate-card" data-view="matches">
@@ -1063,15 +1058,15 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Physiotherapist</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">WCA Assessor</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Home Care Worker</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Senior Care Worker</div></div>
           <div><div class="card-field-label">Location</div><div class="card-field-value">Holborn, London</div></div>
           <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
           <span class="chip">Physiotherapy</span>
-          <span class="chip">Assessment</span>
+          <span class="chip">Care Planning</span>
         </div>
       </div>
       <div class="candidate-card" data-view="matches">
@@ -1087,16 +1082,16 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Occupational Therapist</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Nurse Assessor</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Support Worker</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Care Worker</div></div>
           <div><div class="card-field-label">Location</div><div class="card-field-value">Westminster, London</div></div>
           <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
-          <span class="chip">OT Assessment</span>
-          <span class="chip">WCA</span>
-          <span class="chip">Report Writing</span>
+          <span class="chip">Care Planning</span>
+          <span class="chip">Medication Admin</span>
+          <span class="chip">Record Keeping</span>
         </div>
       </div>
       <div class="candidate-card" data-view="matches">
@@ -1112,15 +1107,15 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Registered Nurse</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Nurse Assessor</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Care Assistant</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Care Worker</div></div>
           <div><div class="card-field-label">Location</div><div class="card-field-value">Southwark, London</div></div>
           <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
-          <span class="chip">Clinical Assessment</span>
-          <span class="chip">PIP</span>
+          <span class="chip">Personal Care</span>
+          <span class="chip">Manual Handling</span>
         </div>
       </div>
       <div class="candidate-card" data-view="matches">
@@ -1136,16 +1131,16 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Paramedic</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">WCA Assessor</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Live-in Carer</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Senior Care Worker</div></div>
           <div><div class="card-field-label">Location</div><div class="card-field-value">Lambeth, London</div></div>
           <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
-          <span class="chip">Triage</span>
-          <span class="chip">Assessment</span>
-          <span class="chip">WCA</span>
+          <span class="chip">First Aid</span>
+          <span class="chip">Care Planning</span>
+          <span class="chip">Medication Admin</span>
         </div>
       </div>
       <div class="candidate-card" data-view="matches">
@@ -1161,15 +1156,15 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Community Nurse</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Nurse Assessor</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Domiciliary Care Worker</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Care Worker</div></div>
           <div><div class="card-field-label">Location</div><div class="card-field-value">Hackney, London</div></div>
           <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
-          <span class="chip">Patient Care</span>
-          <span class="chip">Clinical Assessment</span>
+          <span class="chip">Personal Care</span>
+          <span class="chip">Personal Care</span>
         </div>
       </div>
       <div class="candidate-card" data-view="matches">
@@ -1185,16 +1180,16 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">GP Practice Nurse</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">WCA Assessor</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Healthcare Assistant</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Senior Care Worker</div></div>
           <div><div class="card-field-label">Location</div><div class="card-field-value">Tower Hamlets, London</div></div>
           <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
-          <span class="chip">Assessment</span>
-          <span class="chip">PIP</span>
-          <span class="chip">WCA</span>
+          <span class="chip">Care Planning</span>
+          <span class="chip">Manual Handling</span>
+          <span class="chip">Medication Admin</span>
         </div>
       </div>
     </div>
@@ -1321,7 +1316,7 @@
               <div class="modal-pdf-body">
                 <div class="cv-doc">
                   <div class="cv-name" id="cv-full-name"><span class="cv-redacted">████████████</span></div>
-                  <div class="cv-role" id="cv-role">Staff Nurse · WCA Assessor</div>
+                  <div class="cv-role" id="cv-role">Care Worker · Senior Care Worker</div>
                   <div class="cv-contact">
                     <span id="cv-email"><span class="cv-redacted">██████████████████</span></span>
                     <span id="cv-phone"><span class="cv-redacted">█████████████</span></span>
@@ -1331,26 +1326,26 @@
 
                   <div class="cv-section">
                     <div class="cv-section-title">Profile</div>
-                    <div class="cv-entry-body">Dedicated registered nurse with 8 years of clinical experience across NHS and private healthcare settings. Specialising in functional assessments, PIP and WCA evaluations, and patient-centred care planning. Seeking a Nurse Assessor role to apply assessment expertise in a structured environment.</div>
+                    <div class="cv-entry-body">Dedicated care worker with 8 years of clinical experience across NHS and private healthcare settings. Specialising in functional assessments, PIP and WCA evaluations, and patient-centred care planning. Seeking a Care Worker role to apply assessment expertise in a structured environment.</div>
                   </div>
 
                   <div class="cv-section">
                     <div class="cv-section-title">Experience</div>
                     <div class="cv-entry">
                       <div class="cv-entry-header">
-                        <span class="cv-entry-title">Staff Nurse – Assessment Unit</span>
+                        <span class="cv-entry-title">Senior Care Worker – Domiciliary Team</span>
                         <span class="cv-entry-date">Mar 2020 – Present</span>
                       </div>
-                      <div class="cv-entry-sub">Royal Free Hospital, London</div>
-                      <div class="cv-entry-body">Conducted clinical assessments for inpatients and outpatients. Collaborated with multidisciplinary teams to develop care plans. Completed over 400 WCA and PIP assessments annually.</div>
+                      <div class="cv-entry-sub">Helping Hands Home Care, London</div>
+                      <div class="cv-entry-body">Provided personal care, mobility support and medication administration for clients across South and East London. Coordinated daily care plans with families, GPs and social workers, and mentored new starters on safeguarding and manual handling.</div>
                     </div>
                     <div class="cv-entry">
                       <div class="cv-entry-header">
-                        <span class="cv-entry-title">Registered Nurse</span>
+                        <span class="cv-entry-title">Care Assistant</span>
                         <span class="cv-entry-date">Jun 2016 – Feb 2020</span>
                       </div>
-                      <div class="cv-entry-sub">UCLH NHS Foundation Trust, London</div>
-                      <div class="cv-entry-body">Delivered direct patient care across medical and surgical wards. Supported junior nurses and contributed to ward audits and quality improvement initiatives.</div>
+                      <div class="cv-entry-sub">Bluebird Care, London</div>
+                      <div class="cv-entry-body">Delivered domiciliary care visits to elderly and disabled clients in their own homes. Supported colleagues through shadowing and led handovers, with a focus on consistent care and accurate record keeping.</div>
                     </div>
                   </div>
 
@@ -1358,30 +1353,30 @@
                     <div class="cv-section-title">Education</div>
                     <div class="cv-entry">
                       <div class="cv-entry-header">
-                        <span class="cv-entry-title">BSc (Hons) Nursing</span>
+                        <span class="cv-entry-title">Level 3 Diploma in Adult Care</span>
                         <span class="cv-entry-date">2013 – 2016</span>
                       </div>
                       <div class="cv-entry-sub">King's College London</div>
                     </div>
                     <div class="cv-entry">
                       <div class="cv-entry-header">
-                        <span class="cv-entry-title">NMC Registered Nurse (Adult)</span>
+                        <span class="cv-entry-title">NMC Care Assistant (Adult)</span>
                         <span class="cv-entry-date">2016 – Present</span>
                       </div>
-                      <div class="cv-entry-sub">Nursing and Midwifery Council</div>
+                      <div class="cv-entry-sub">Skills for Care</div>
                     </div>
                   </div>
 
                   <div class="cv-section">
                     <div class="cv-section-title">Skills</div>
                     <div class="cv-skills-list">
-                      <span class="cv-skill-chip">Clinical Assessment</span>
-                      <span class="cv-skill-chip">WCA</span>
-                      <span class="cv-skill-chip">PIP Assessments</span>
+                      <span class="cv-skill-chip">Personal Care</span>
+                      <span class="cv-skill-chip">Medication Admin</span>
+                      <span class="cv-skill-chip">Manual Handling</span>
                       <span class="cv-skill-chip">Care Planning</span>
                       <span class="cv-skill-chip">Patient Communication</span>
-                      <span class="cv-skill-chip">Report Writing</span>
-                      <span class="cv-skill-chip">MDT Collaboration</span>
+                      <span class="cv-skill-chip">Record Keeping</span>
+                      <span class="cv-skill-chip">Team Working</span>
                     </div>
                   </div>
                 </div>
@@ -1400,7 +1395,7 @@
                 </div>
                 <div class="profile-field">
                   <div class="profile-field-label">Sectors &amp; Roles</div>
-                  <div class="profile-field-value">Healthcare · Nurse Assessor</div>
+                  <div class="profile-field-value">Healthcare · Care Worker</div>
                 </div>
               </div>
             </div>
@@ -1438,13 +1433,13 @@
               <div class="profile-section-title">Work experience</div>
               <div class="profile-section-content">
                 <div class="profile-experience-entry">
-                  <div class="profile-field-label">Staff Nurse – Assessment Unit</div>
-                  <div class="profile-field-value-muted">Royal Free Hospital</div>
+                  <div class="profile-field-label">Senior Care Worker – Domiciliary Team</div>
+                  <div class="profile-field-value-muted">Helping Hands Home Care</div>
                   <div class="profile-field-value-muted">2020 – Present</div>
                 </div>
                 <div class="profile-experience-entry">
-                  <div class="profile-field-label">Registered Nurse</div>
-                  <div class="profile-field-value-muted">UCLH NHS Foundation Trust</div>
+                  <div class="profile-field-label">Care Assistant</div>
+                  <div class="profile-field-value-muted">Bluebird Care</div>
                   <div class="profile-field-value-muted">2016 – 2020</div>
                 </div>
               </div>
@@ -1454,13 +1449,13 @@
               <div class="profile-section-content">
                 <div class="profile-qual-entry">
                   <div class="profile-field-label">King's College London</div>
-                  <div class="profile-field-value-muted">BSc (Hons) Nursing (Grade: 2:1)</div>
+                  <div class="profile-field-value-muted">Level 3 Diploma in Adult Care (Grade: 2:1)</div>
                   <div class="profile-field-value-muted">Degree</div>
                   <div class="profile-field-value-muted">2013 – 2016</div>
                 </div>
                 <div class="profile-qual-entry">
-                  <div class="profile-field-label">Nursing and Midwifery Council</div>
-                  <div class="profile-field-value-muted">NMC Registered Nurse (Adult)</div>
+                  <div class="profile-field-label">Skills for Care</div>
+                  <div class="profile-field-value-muted">NMC Care Assistant (Adult)</div>
                   <div class="profile-field-value-muted">Professional registration</div>
                   <div class="profile-field-value-muted">2016 – Present</div>
                 </div>
@@ -1470,13 +1465,13 @@
               <div class="profile-section-title">Skills</div>
               <div class="profile-section-content">
                 <div class="profile-chip-list">
-                  <span class="profile-chip">Clinical Assessment</span>
+                  <span class="profile-chip">Personal Care</span>
                   <span class="profile-chip">WCA</span>
-                  <span class="profile-chip">PIP Assessments</span>
+                  <span class="profile-chip">Manual Handling</span>
                   <span class="profile-chip">Care Planning</span>
                   <span class="profile-chip">Patient Communication</span>
-                  <span class="profile-chip">Report Writing</span>
-                  <span class="profile-chip">MDT Collaboration</span>
+                  <span class="profile-chip">Record Keeping</span>
+                  <span class="profile-chip">Team Working</span>
                   <span class="profile-chip">Triage</span>
                 </div>
               </div>
@@ -1494,7 +1489,7 @@
             <div class="profile-section">
               <div class="profile-section-title">Personal statement</div>
               <div class="profile-section-content">
-                <div class="profile-statement">Dedicated registered nurse with 8 years of clinical experience across NHS and private healthcare settings. Specialising in functional assessments, PIP and WCA evaluations, and patient-centred care planning. Seeking a Nurse Assessor role to apply assessment expertise in a structured environment.</div>
+                <div class="profile-statement">Dedicated care worker with 8 years of clinical experience across NHS and private healthcare settings. Specialising in functional assessments, PIP and WCA evaluations, and patient-centred care planning. Seeking a Care Worker role to apply assessment expertise in a structured environment.</div>
               </div>
             </div>
           </div>
@@ -1570,14 +1565,14 @@
 
     // Per-candidate CV/contact data, revealed only for invited candidates
     const cvData = {
-      'Sophia':  { full: 'Sophia Clarke',     role: 'Staff Nurse · WCA Assessor',           email: 'sophia.clarke@email.com',     phone: '07700 900 412', file: 'Sophia_Clarke_CV.pdf' },
-      'James':   { full: 'James Okafor',      role: 'Mental Health Nurse · Nurse Assessor', email: 'james.okafor@email.com',      phone: '07700 900 218', file: 'James_Okafor_CV.pdf' },
-      'Amara':   { full: 'Amara Mensah',      role: 'Physiotherapist · WCA Assessor',       email: 'amara.mensah@email.com',      phone: '07700 900 365', file: 'Amara_Mensah_CV.pdf' },
-      'Daniel':  { full: 'Daniel Hughes',     role: 'Occupational Therapist · Assessor',    email: 'daniel.hughes@email.com',     phone: '07700 900 472', file: 'Daniel_Hughes_CV.pdf' },
-      'Priya':   { full: 'Priya Patel',       role: 'Registered Nurse · Nurse Assessor',    email: 'priya.patel@email.com',       phone: '07700 900 184', file: 'Priya_Patel_CV.pdf' },
-      'Tom':     { full: 'Tom Whitfield',     role: 'Paramedic · WCA Assessor',             email: 'tom.whitfield@email.com',     phone: '07700 900 593', file: 'Tom_Whitfield_CV.pdf' },
-      'Fatima':  { full: 'Fatima Hassan',     role: 'Community Nurse · Nurse Assessor',     email: 'fatima.hassan@email.com',     phone: '07700 900 327', file: 'Fatima_Hassan_CV.pdf' },
-      'Marcus':  { full: 'Marcus Reid',       role: 'GP Practice Nurse · WCA Assessor',     email: 'marcus.reid@email.com',       phone: '07700 900 641', file: 'Marcus_Reid_CV.pdf' },
+      'Sophia':  { full: 'Sophia Clarke',     role: 'Care Worker · Senior Care Worker',           email: 'sophia.clarke@email.com',     phone: '07700 900 412', file: 'Sophia_Clarke_CV.pdf' },
+      'James':   { full: 'James Okafor',      role: 'Senior Care Assistant · Care Worker', email: 'james.okafor@email.com',      phone: '07700 900 218', file: 'James_Okafor_CV.pdf' },
+      'Amara':   { full: 'Amara Mensah',      role: 'Home Care Worker · Senior Care Worker',       email: 'amara.mensah@email.com',      phone: '07700 900 365', file: 'Amara_Mensah_CV.pdf' },
+      'Daniel':  { full: 'Daniel Hughes',     role: 'Support Worker · Assessor',    email: 'daniel.hughes@email.com',     phone: '07700 900 472', file: 'Daniel_Hughes_CV.pdf' },
+      'Priya':   { full: 'Priya Patel',       role: 'Care Assistant · Care Worker',    email: 'priya.patel@email.com',       phone: '07700 900 184', file: 'Priya_Patel_CV.pdf' },
+      'Tom':     { full: 'Tom Whitfield',     role: 'Live-in Carer · Senior Care Worker',             email: 'tom.whitfield@email.com',     phone: '07700 900 593', file: 'Tom_Whitfield_CV.pdf' },
+      'Fatima':  { full: 'Fatima Hassan',     role: 'Domiciliary Care Worker · Senior Care Worker',     email: 'fatima.hassan@email.com',     phone: '07700 900 327', file: 'Fatima_Hassan_CV.pdf' },
+      'Marcus':  { full: 'Marcus Reid',       role: 'Healthcare Assistant · Senior Care Worker',     email: 'marcus.reid@email.com',       phone: '07700 900 641', file: 'Marcus_Reid_CV.pdf' },
     };
 
     // ── Element refs ──────────────────────────────────────────────
@@ -1888,6 +1883,18 @@
     applyFilter();
     updateResultsInfo();
     updateCount();
+
+    // Use the job title entered on the Job Ad Form (else fallback)
+    (function () {
+      const el = document.getElementById('page-job-title');
+      if (!el) return;
+      try {
+        const t = localStorage.getItem('jt-job-title');
+        el.textContent = (t && t.trim()) ? t : 'Default job title';
+      } catch (e) {
+        el.textContent = 'Default job title';
+      }
+    })();
 
     // ── Deeplink: ?candidate=<name> auto-opens the matching modal ─
     (function handleDeeplink() {
