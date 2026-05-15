@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application Management – WCA Care Worker</title>
+  <title>Application Management – Accountant</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@400;600;700&family=Roboto:wght@800&display=swap" rel="stylesheet" />
@@ -156,9 +156,8 @@
     .btn-outline.btn-more svg { width: 4px; height: 16px; display: block; }
 
     .section-label {
-      font-weight: 700; font-size: 24px; line-height: 24px;
+      font-weight: 700; font-size: 18px; line-height: 24px;
       color: var(--c-text);
-      padding-bottom:8px;
     }
 
     /* ── Metric cards ──────────────────────────────────────────── */
@@ -931,7 +930,7 @@
                 <path fill="currentColor" fill-rule="nonzero" d="M 6.875 14.888 L 0.275 8.288 C 0.175 8.188 0.104 8.08 0.063 7.963 C 0.021 7.846 0 7.721 0 7.588 C 0 7.455 0.021 7.33 0.063 7.213 C 0.104 7.096 0.175 6.988 0.275 6.888 L 6.875 0.288 C 7.058 0.105 7.287 0.009 7.563 0 C 7.838 -0.008 8.075 0.088 8.275 0.288 C 8.475 0.471 8.579 0.701 8.588 0.976 C 8.596 1.251 8.5 1.488 8.3 1.688 L 3.4 6.588 L 14.575 6.588 C 14.858 6.588 15.096 6.684 15.288 6.875 C 15.479 7.067 15.575 7.305 15.575 7.588 C 15.575 7.871 15.479 8.109 15.288 8.3 C 15.096 8.492 14.858 8.588 14.575 8.588 L 3.4 8.588 L 8.3 13.488 C 8.483 13.671 8.579 13.905 8.588 14.188 C 8.596 14.471 8.5 14.705 8.3 14.888 C 8.117 15.088 7.883 15.188 7.6 15.188 C 7.317 15.188 7.075 15.088 6.875 14.888 Z"/>
               </svg>
             </button>
-            <h1 class="job-title" id="page-job-title">WCA Care Worker</h1>
+            <h1 class="job-title" id="page-job-title">Accountant</h1>
           </div>
           <div class="job-details">
             <span class="tag-active">Active</span>
@@ -947,14 +946,14 @@
           </div>
         </div>
       </div>
-      <span class="section-label">Invite recommended candidates</span>
+      <span class="section-label">Invite matching candidates</span>
     </div>
 
     <!-- Metrics -->
     <div class="metrics-row">
       <div class="metric-card">
         <span class="metric-value" id="matches-count">8</span>
-        <span class="metric-label">Recommended</span>
+        <span class="metric-label">Matches</span>
       </div>
       <div class="metric-card">
         <span class="metric-value" id="invited-count">0</span>
@@ -971,14 +970,14 @@
       <div class="actions-left">
         <div class="dropdown-wrap">
           <button class="btn-filter" id="filter-btn" type="button">
-            <span id="filter-label">Recommended</span>
+            <span id="filter-label">Matches</span>
             <svg class="caret" width="10" height="5" viewBox="0 0 10 5" fill="rgb(15,21,26)" aria-hidden="true">
               <path d="M5 5L0 0L10 0L5 5Z" />
             </svg>
           </button>
           <div class="dropdown-menu" id="filter-dropdown" role="menu">
             <button class="dropdown-item selected" type="button" data-value="matches" role="menuitem">
-              <div class="dropdown-item-inner">Recommended</div>
+              <div class="dropdown-item-inner">Matches</div>
             </button>
             <button class="dropdown-item" type="button" data-value="invited" role="menuitem">
               <div class="dropdown-item-inner">Invited</div>
@@ -992,7 +991,7 @@
           </svg>
         </button>
       </div>
-      <span class="results-info" id="results-info">1 – 8 of 8 recommendations</span>
+      <span class="results-info" id="results-info">1 – 8 of 8 matches</span>
     </div>
 
     <!-- Candidate grid -->
@@ -1010,15 +1009,15 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Care Worker</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Care Worker</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Junior Accountant</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Accountant</div></div>
           <div><div class="card-field-label">Location</div><div class="card-field-value">Camden, London</div></div>
           <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
-          <span class="chip">Personal Care</span>
-          <span class="chip">Medication Admin</span>
+          <span class="chip">Bookkeeping</span>
+          <span class="chip">Xero</span>
         </div>
       </div>
       <div class="candidate-card" data-view="matches">
@@ -1034,16 +1033,16 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Senior Care Assistant</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Care Worker</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Senior Bookkeeper</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Accountant</div></div>
           <div><div class="card-field-label">Location</div><div class="card-field-value">Islington, London</div></div>
           <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
-          <span class="chip">Personal Care</span>
-          <span class="chip">Care Planning</span>
-          <span class="chip">Manual Handling</span>
+          <span class="chip">Bookkeeping</span>
+          <span class="chip">Reconciliation</span>
+          <span class="chip">VAT Returns</span>
         </div>
       </div>
       <div class="candidate-card" data-view="matches">
@@ -1059,15 +1058,15 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Home Care Worker</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Senior Care Worker</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Accounts Assistant</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Senior Accountant</div></div>
           <div><div class="card-field-label">Location</div><div class="card-field-value">Holborn, London</div></div>
           <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
-          <span class="chip">Physiotherapy</span>
-          <span class="chip">Care Planning</span>
+          <span class="chip">Management Accounts</span>
+          <span class="chip">Reconciliation</span>
         </div>
       </div>
       <div class="candidate-card" data-view="matches">
@@ -1083,16 +1082,16 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Support Worker</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Care Worker</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Finance Assistant</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Accountant</div></div>
           <div><div class="card-field-label">Location</div><div class="card-field-value">Westminster, London</div></div>
           <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
-          <span class="chip">Care Planning</span>
-          <span class="chip">Medication Admin</span>
-          <span class="chip">Record Keeping</span>
+          <span class="chip">Reconciliation</span>
+          <span class="chip">VAT Returns</span>
+          <span class="chip">Excel</span>
         </div>
       </div>
       <div class="candidate-card" data-view="matches">
@@ -1108,15 +1107,15 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Care Assistant</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Care Worker</div></div>
-          <div><div class="card-field-label">Location</div><div class="card-field-value">Philippines</div></div>
-          <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Visa required</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Audit Junior</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Accountant</div></div>
+          <div><div class="card-field-label">Location</div><div class="card-field-value">Southwark, London</div></div>
+          <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
-          <span class="chip">Personal Care</span>
-          <span class="chip">Manual Handling</span>
+          <span class="chip">Audit</span>
+          <span class="chip">Excel</span>
         </div>
       </div>
       <div class="candidate-card" data-view="matches">
@@ -1132,16 +1131,16 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Live-in Carer</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Senior Care Worker</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Tax Associate</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Senior Accountant</div></div>
           <div><div class="card-field-label">Location</div><div class="card-field-value">Lambeth, London</div></div>
           <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
-          <span class="chip">First Aid</span>
-          <span class="chip">Care Planning</span>
-          <span class="chip">Medication Admin</span>
+          <span class="chip">Tax Compliance</span>
+          <span class="chip">VAT Returns</span>
+          <span class="chip">Reconciliation</span>
         </div>
       </div>
       <div class="candidate-card" data-view="matches">
@@ -1157,15 +1156,15 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Domiciliary Care Worker</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Care Worker</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Bookkeeper</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Accountant</div></div>
           <div><div class="card-field-label">Location</div><div class="card-field-value">Hackney, London</div></div>
           <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
-          <span class="chip">Personal Care</span>
-          <span class="chip">Personal Care</span>
+          <span class="chip">Bookkeeping</span>
+          <span class="chip">Xero</span>
         </div>
       </div>
       <div class="candidate-card" data-view="matches">
@@ -1181,16 +1180,16 @@
         </div>
         <div class="card-divider"></div>
         <div class="card-fields">
-          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Healthcare Assistant</div></div>
-          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Senior Care Worker</div></div>
+          <div><div class="card-field-label">Current job title</div><div class="card-field-value">Assistant Management Accountant</div></div>
+          <div><div class="card-field-label">Desired job title</div><div class="card-field-value">Senior Accountant</div></div>
           <div><div class="card-field-label">Location</div><div class="card-field-value">Tower Hamlets, London</div></div>
           <div><div class="card-field-label">Work eligibility</div><div class="card-field-value">Eligible to work in UK</div></div>
         </div>
         <div class="card-skills-label">Matching skills</div>
         <div class="card-chips">
-          <span class="chip">Care Planning</span>
-          <span class="chip">Manual Handling</span>
-          <span class="chip">Medication Admin</span>
+          <span class="chip">Management Accounts</span>
+          <span class="chip">Budgeting</span>
+          <span class="chip">Forecasting</span>
         </div>
       </div>
     </div>
@@ -1317,7 +1316,7 @@
               <div class="modal-pdf-body">
                 <div class="cv-doc">
                   <div class="cv-name" id="cv-full-name"><span class="cv-redacted">████████████</span></div>
-                  <div class="cv-role" id="cv-role">Care Worker · Senior Care Worker</div>
+                  <div class="cv-role" id="cv-role">Junior Accountant · Accountant</div>
                   <div class="cv-contact">
                     <span id="cv-email"><span class="cv-redacted">██████████████████</span></span>
                     <span id="cv-phone"><span class="cv-redacted">█████████████</span></span>
@@ -1327,26 +1326,26 @@
 
                   <div class="cv-section">
                     <div class="cv-section-title">Profile</div>
-                    <div class="cv-entry-body">Dedicated care worker with 8 years of clinical experience across NHS and private healthcare settings. Specialising in functional assessments, PIP and WCA evaluations, and patient-centred care planning. Seeking a Care Worker role to apply assessment expertise in a structured environment.</div>
+                    <div class="cv-entry-body">Detail-oriented accountant with 8 years of experience across SME practice and in-house finance teams. Specialising in month-end close, management accounts and VAT compliance under FRS 102. Seeking an Accountant role to apply technical and reporting expertise in a growing finance team.</div>
                   </div>
 
                   <div class="cv-section">
                     <div class="cv-section-title">Experience</div>
                     <div class="cv-entry">
                       <div class="cv-entry-header">
-                        <span class="cv-entry-title">Senior Care Worker – Domiciliary Team</span>
+                        <span class="cv-entry-title">Accountant</span>
                         <span class="cv-entry-date">Mar 2020 – Present</span>
                       </div>
-                      <div class="cv-entry-sub">Helping Hands Home Care, London</div>
-                      <div class="cv-entry-body">Provided personal care, mobility support and medication administration for clients across South and East London. Coordinated daily care plans with families, GPs and social workers, and mentored new starters on safeguarding and manual handling.</div>
+                      <div class="cv-entry-sub">Holborn &amp; Co Chartered Accountants, London</div>
+                      <div class="cv-entry-body">Owned month-end close and management accounts for a portfolio of 12 SME clients across retail and professional services. Prepared statutory accounts under FRS 102, quarterly VAT returns and corporation tax computations, and mentored two trainees through their ACCA qualification.</div>
                     </div>
                     <div class="cv-entry">
                       <div class="cv-entry-header">
-                        <span class="cv-entry-title">Care Assistant</span>
+                        <span class="cv-entry-title">Assistant Accountant</span>
                         <span class="cv-entry-date">Jun 2016 – Feb 2020</span>
                       </div>
-                      <div class="cv-entry-sub">Bluebird Care, London</div>
-                      <div class="cv-entry-body">Delivered domiciliary care visits to elderly and disabled clients in their own homes. Supported colleagues through shadowing and led handovers, with a focus on consistent care and accurate record keeping.</div>
+                      <div class="cv-entry-sub">Bluebird Finance Services, London</div>
+                      <div class="cv-entry-body">Maintained the purchase and sales ledgers, ran weekly bank reconciliations and supported month-end journals. Led the migration from Sage 50 to Xero across 30 client books and produced quarterly MI packs for client review.</div>
                     </div>
                   </div>
 
@@ -1354,30 +1353,30 @@
                     <div class="cv-section-title">Education</div>
                     <div class="cv-entry">
                       <div class="cv-entry-header">
-                        <span class="cv-entry-title">Level 3 Diploma in Adult Care</span>
+                        <span class="cv-entry-title">BSc Accounting &amp; Finance</span>
                         <span class="cv-entry-date">2013 – 2016</span>
                       </div>
                       <div class="cv-entry-sub">King's College London</div>
                     </div>
                     <div class="cv-entry">
                       <div class="cv-entry-header">
-                        <span class="cv-entry-title">NMC Care Assistant (Adult)</span>
+                        <span class="cv-entry-title">ACCA (Qualified)</span>
                         <span class="cv-entry-date">2016 – Present</span>
                       </div>
-                      <div class="cv-entry-sub">Skills for Care</div>
+                      <div class="cv-entry-sub">Association of Chartered Certified Accountants</div>
                     </div>
                   </div>
 
                   <div class="cv-section">
                     <div class="cv-section-title">Skills</div>
                     <div class="cv-skills-list">
-                      <span class="cv-skill-chip">Personal Care</span>
-                      <span class="cv-skill-chip">Medication Admin</span>
-                      <span class="cv-skill-chip">Manual Handling</span>
-                      <span class="cv-skill-chip">Care Planning</span>
-                      <span class="cv-skill-chip">Patient Communication</span>
-                      <span class="cv-skill-chip">Record Keeping</span>
-                      <span class="cv-skill-chip">Team Working</span>
+                      <span class="cv-skill-chip">Bookkeeping</span>
+                      <span class="cv-skill-chip">Management Accounts</span>
+                      <span class="cv-skill-chip">VAT Returns</span>
+                      <span class="cv-skill-chip">Reconciliation</span>
+                      <span class="cv-skill-chip">Xero</span>
+                      <span class="cv-skill-chip">Sage</span>
+                      <span class="cv-skill-chip">Advanced Excel</span>
                     </div>
                   </div>
                 </div>
@@ -1396,7 +1395,7 @@
                 </div>
                 <div class="profile-field">
                   <div class="profile-field-label">Sectors &amp; Roles</div>
-                  <div class="profile-field-value">Healthcare · Care Worker</div>
+                  <div class="profile-field-value">Finance &amp; Accounting · Accountant</div>
                 </div>
               </div>
             </div>
@@ -1434,13 +1433,13 @@
               <div class="profile-section-title">Work experience</div>
               <div class="profile-section-content">
                 <div class="profile-experience-entry">
-                  <div class="profile-field-label">Senior Care Worker – Domiciliary Team</div>
-                  <div class="profile-field-value-muted">Helping Hands Home Care</div>
+                  <div class="profile-field-label">Accountant</div>
+                  <div class="profile-field-value-muted">Holborn &amp; Co Chartered Accountants</div>
                   <div class="profile-field-value-muted">2020 – Present</div>
                 </div>
                 <div class="profile-experience-entry">
-                  <div class="profile-field-label">Care Assistant</div>
-                  <div class="profile-field-value-muted">Bluebird Care</div>
+                  <div class="profile-field-label">Assistant Accountant</div>
+                  <div class="profile-field-value-muted">Bluebird Finance Services</div>
                   <div class="profile-field-value-muted">2016 – 2020</div>
                 </div>
               </div>
@@ -1450,14 +1449,14 @@
               <div class="profile-section-content">
                 <div class="profile-qual-entry">
                   <div class="profile-field-label">King's College London</div>
-                  <div class="profile-field-value-muted">Level 3 Diploma in Adult Care (Grade: 2:1)</div>
+                  <div class="profile-field-value-muted">BSc Accounting &amp; Finance (Grade: 2:1)</div>
                   <div class="profile-field-value-muted">Degree</div>
                   <div class="profile-field-value-muted">2013 – 2016</div>
                 </div>
                 <div class="profile-qual-entry">
-                  <div class="profile-field-label">Skills for Care</div>
-                  <div class="profile-field-value-muted">NMC Care Assistant (Adult)</div>
-                  <div class="profile-field-value-muted">Professional registration</div>
+                  <div class="profile-field-label">ACCA</div>
+                  <div class="profile-field-value-muted">Association of Chartered Certified Accountants</div>
+                  <div class="profile-field-value-muted">Professional qualification</div>
                   <div class="profile-field-value-muted">2016 – Present</div>
                 </div>
               </div>
@@ -1466,14 +1465,14 @@
               <div class="profile-section-title">Skills</div>
               <div class="profile-section-content">
                 <div class="profile-chip-list">
-                  <span class="profile-chip">Personal Care</span>
-                  <span class="profile-chip">WCA</span>
-                  <span class="profile-chip">Manual Handling</span>
-                  <span class="profile-chip">Care Planning</span>
-                  <span class="profile-chip">Patient Communication</span>
-                  <span class="profile-chip">Record Keeping</span>
-                  <span class="profile-chip">Team Working</span>
-                  <span class="profile-chip">Triage</span>
+                  <span class="profile-chip">Bookkeeping</span>
+                  <span class="profile-chip">Management Accounts</span>
+                  <span class="profile-chip">VAT Returns</span>
+                  <span class="profile-chip">Reconciliation</span>
+                  <span class="profile-chip">Xero</span>
+                  <span class="profile-chip">Sage</span>
+                  <span class="profile-chip">Advanced Excel</span>
+                  <span class="profile-chip">FRS 102</span>
                 </div>
               </div>
             </div>
@@ -1490,7 +1489,7 @@
             <div class="profile-section">
               <div class="profile-section-title">Personal statement</div>
               <div class="profile-section-content">
-                <div class="profile-statement">Dedicated care worker with 8 years of clinical experience across NHS and private healthcare settings. Specialising in functional assessments, PIP and WCA evaluations, and patient-centred care planning. Seeking a Care Worker role to apply assessment expertise in a structured environment.</div>
+                <div class="profile-statement">Detail-oriented accountant with 8 years of experience across SME practice and in-house finance teams. Specialising in month-end close, management accounts and VAT compliance under FRS 102. Seeking an Accountant role to apply technical and reporting expertise in a growing finance team.</div>
               </div>
             </div>
           </div>
@@ -1566,14 +1565,14 @@
 
     // Per-candidate CV/contact data, revealed only for invited candidates
     const cvData = {
-      'Sophia':  { full: 'Sophia Clarke',     role: 'Care Worker · Senior Care Worker',           email: 'sophia.clarke@email.com',     phone: '07700 900 412', file: 'Sophia_Clarke_CV.pdf' },
-      'James':   { full: 'James Okafor',      role: 'Senior Care Assistant · Care Worker', email: 'james.okafor@email.com',      phone: '07700 900 218', file: 'James_Okafor_CV.pdf' },
-      'Amara':   { full: 'Amara Mensah',      role: 'Home Care Worker · Senior Care Worker',       email: 'amara.mensah@email.com',      phone: '07700 900 365', file: 'Amara_Mensah_CV.pdf' },
-      'Daniel':  { full: 'Daniel Hughes',     role: 'Support Worker · Assessor',    email: 'daniel.hughes@email.com',     phone: '07700 900 472', file: 'Daniel_Hughes_CV.pdf' },
-      'Priya':   { full: 'Priya Patel',       role: 'Care Assistant · Care Worker',    email: 'priya.patel@email.com',       phone: '07700 900 184', file: 'Priya_Patel_CV.pdf' },
-      'Tom':     { full: 'Tom Whitfield',     role: 'Live-in Carer · Senior Care Worker',             email: 'tom.whitfield@email.com',     phone: '07700 900 593', file: 'Tom_Whitfield_CV.pdf' },
-      'Fatima':  { full: 'Fatima Hassan',     role: 'Domiciliary Care Worker · Senior Care Worker',     email: 'fatima.hassan@email.com',     phone: '07700 900 327', file: 'Fatima_Hassan_CV.pdf' },
-      'Marcus':  { full: 'Marcus Reid',       role: 'Healthcare Assistant · Senior Care Worker',     email: 'marcus.reid@email.com',       phone: '07700 900 641', file: 'Marcus_Reid_CV.pdf' },
+      'Sophia':  { full: 'Sophia Clarke',     role: 'Junior Accountant · Accountant',                       email: 'sophia.clarke@email.com',     phone: '07700 900 412', file: 'Sophia_Clarke_CV.pdf' },
+      'James':   { full: 'James Okafor',      role: 'Senior Bookkeeper · Accountant',                       email: 'james.okafor@email.com',      phone: '07700 900 218', file: 'James_Okafor_CV.pdf' },
+      'Amara':   { full: 'Amara Mensah',      role: 'Accounts Assistant · Senior Accountant',               email: 'amara.mensah@email.com',      phone: '07700 900 365', file: 'Amara_Mensah_CV.pdf' },
+      'Daniel':  { full: 'Daniel Hughes',     role: 'Finance Assistant · Accountant',                       email: 'daniel.hughes@email.com',     phone: '07700 900 472', file: 'Daniel_Hughes_CV.pdf' },
+      'Priya':   { full: 'Priya Patel',       role: 'Audit Junior · Accountant',                            email: 'priya.patel@email.com',       phone: '07700 900 184', file: 'Priya_Patel_CV.pdf' },
+      'Tom':     { full: 'Tom Whitfield',     role: 'Tax Associate · Senior Accountant',                    email: 'tom.whitfield@email.com',     phone: '07700 900 593', file: 'Tom_Whitfield_CV.pdf' },
+      'Fatima':  { full: 'Fatima Hassan',     role: 'Bookkeeper · Accountant',                              email: 'fatima.hassan@email.com',     phone: '07700 900 327', file: 'Fatima_Hassan_CV.pdf' },
+      'Marcus':  { full: 'Marcus Reid',       role: 'Assistant Management Accountant · Senior Accountant', email: 'marcus.reid@email.com',       phone: '07700 900 641', file: 'Marcus_Reid_CV.pdf' },
     };
 
     // ── Element refs ──────────────────────────────────────────────
